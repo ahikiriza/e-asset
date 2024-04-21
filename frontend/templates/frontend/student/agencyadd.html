@@ -1,0 +1,95 @@
+{% extends 'frontend/base.html' %}
+{% block  title %} Agency Add {% endblock title %}
+{% block  pagetitle %} Agency Add {% endblock pagetitle %}
+{% load static %}
+{% block  main %} 
+
+<!-- inner-content -->
+<div class="inner-content">
+    <div class="">
+        <div class="btns">
+            <a href="/agency-list" class="btn btn-sm add-btn text-white mb-2 ml-3">View Locations</a>
+            <a href="" data-toggle="modal" class="btn btn-sm bg-success text-white mb-2 ml-2 ">Import excel</a>
+            <!-- <a href="{% static 'assets/students_template.xlsx' %}" class="btn btn-sm btn-primary float-right"> <i class="fas fa-download    "></i> Excel template</a> -->
+            <!-- import Modal -->
+            <div class="modal fade" id="import" tabindex="-1" role="dialog" aria-labelledby="modelTitleId" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content ">
+                        <div class="modal-header bg-primary">
+                            <h5 class="modal-title text-white">Import an excel or csv student list</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                        </div>
+                        <div class="modal-body">
+                            <form action="/import_students/" method="post" enctype="multipart/form-data">
+                                {% csrf_token %}
+                                <div class="form-group">
+                                    <label for="">Select File: </label><br>
+                                    <input type="file" name="student_file" id="">
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="submit" class="btn btn-sm btn-primary">Save</button>
+                                </div>
+                            </form>
+                        </div>
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- form-section -->
+
+    <form action="submit/" method="POST" class="form ml-3 p-3 shadow rounded bg-light" enctype="multipart/form-data">
+        {% csrf_token %}
+
+        <div class="title">
+            <h5 class="text-uppercase text-center">Register Location</h5>
+            <hr>
+        </div>
+        <!-- Success message after data has been sent  -->
+        {% if messages %}
+        <ul class="messages">
+        {% for message in messages %}
+            <div class="alert alert-success alert-dismissible fade show" role="alert" {% if message.tags %} class="{{ message.tags }}"{% endif %}>
+              <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+              <strong>{{ message }}</strong> 
+            </div>
+        {% endfor %}
+        </ul>
+        {% endif %}
+
+
+        <!-- equipment info section -->
+        <div class="stud-info">
+            <div class="sub-heading">
+                <h5>Location Information</h5>
+            </div>
+            <div class="row">
+                <!-- Agency name -->
+                <div class="form-group col-md-4">
+                    <label for="">Location Name: </label>
+                    <input type="text" name="agency_name" class="form-control" required>
+                </div>
+                <!-- PCC-->
+                <div class="form-group col-md-4">
+                    <label for="">PCC </label>
+                    <input type="text" name="pcc" class="form-control">
+                </div>
+               
+            </div>
+            <div class="form-group">
+                <button style="width: 100px;" type="submit" class="btn btn-sm bg-dark text-white">SUBMIT</button>
+            </div>
+        </div>       
+         
+    </form>
+    <!-- form-section -->
+
+</div>
+<!-- inner-content -->
+
+{% endblock main %}

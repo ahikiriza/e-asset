@@ -1,0 +1,203 @@
+{% extends 'frontend/base.html' %}
+{% block  title %} Enrollment {% endblock title %}
+{% block  pagetitle %} Enrollment {% endblock pagetitle %}
+{% block  main %} 
+
+<!-- inner-content -->
+<div class="inner-content">
+    <nav class=" ml-2 mt-2">
+        <ul class="d-flex"style="list-style-type: none;" >
+            <li class="nav-item active" >
+                <a class="nav-link btn btn-sm btn-danger mr-2" href="/settings/enrollment"><b>Enrollment</b> <span class="sr-only">(current)</span></a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link btn btn-sm btn-danger mr-2" href="/settings/school_info/"><b>School information</b></a>
+            </li>
+            
+        </ul>
+    </nav>
+    <!-- current term -->
+    <div class="row ml-2 align-items-center">
+        {% for data in term_data %}
+        <div class="current-term mr-3">
+            <a class=" btn-md btn-primary text-white p-2">Current Term: </a>
+            <a  class=" btn-md btn-dark text-white p-2">{{data.current_term}} </a>
+        </div>
+        <div class="current-year"> 
+        </div>
+            <a class=" btn-md btn-primary text-white p-2">Current Year: </a>
+            <a class=" btn-md btn-dark text-white p-2">{{data.current_year}} </a>
+        {% endfor %}
+    </div>
+    <!-- current term -->
+    {% if messages %}
+        <ul class="messages col-md-6 mt-3">
+            <script>
+                $(".alert").alert();
+            </script>
+            {% for message in messages %}
+                <div class="alert alert-warning alert-dismissible fade show" role="alert" {% if message.tags %} class="{{ message.tags }}"{% endif %}>
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                    </button>
+                    <strong >{{ message }}</strong> 
+                </div>
+            {% endfor %}
+        </ul>
+    {% endif %}
+
+    <div class="row">
+        <!-- form-section -->
+        <div class="col-md-8">
+            <form action="" class=" form shadow mt-4 rounded p-4 " method="post">
+                {% csrf_token %}
+                <h5 class="text-center">Add Term</h5>
+                <div class="row">
+                    <div class="form-group col-md-6">
+                        <label for="">Select Term:</label>
+                        <select name="term" id="" class="form-control" required>
+                            <option value="" selected disabled>---</option>
+                            <option value="Term I">Term I</option>
+                            <option value="Term II">Term II</option>
+                            <option value="Term III">Term III</option>
+                        </select>
+                        
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label for="">Confirm Current Year:</label>
+                        <input type="text" name="year" class="form-control" value="{% now 'Y' %}" readonly>
+                    </div>
+                </div>
+    
+                <div class="row">
+                    <div class="form-group col-md-6">
+                        <label for="">Start Date:</label>
+                        <input type="date" name="start_date" class="form-control" required>
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label for="">End Date:</label>
+                        <input type="date" name="end_date" class="form-control" required>
+                    </div>
+                </div>
+    
+                <button type="submit" class="btn btn-sm btn-dark w-25">SAVE</button>
+            </form>
+        </div>
+        <!-- form-section -->
+
+        <!-- term details -->
+        <div class="current_term col-md-4 mt-3">
+            <div class="shadow rounded bg-dark text-white p-3">
+                <h5 class="text-center">Academic Term Details</h5>
+                
+                <hr color="#fff">
+                {% for data in term_data %}
+                <div class="d-flex" style="margin-bottom: -15px;">
+                    <p class="mr-3"><b>Current Term: </b></p>
+                    <p>{{data.current_term}}</p>
+                </div>
+                <hr>
+                <div class="d-flex" style="margin-bottom: -15px;">
+                    <p class="mr-3"><b>Current Year: </b></p>
+                    <p>{{data.current_year}}</p>
+                </div>
+                <hr>
+                <div class="d-flex" style="margin-bottom: -15px;">
+                    <p class="mr-3"><b>Start Date: </b></p>
+                    <p>{{data.start_date}}</p>
+                </div>
+                <hr>
+                <div class="d-flex" style="margin-bottom: -15px;">
+                    <p class="mr-3"><b>End Date: </b></p>
+                    <p>{{data.end_date}}</p>
+                </div>
+                <hr>
+                <div class="btns">
+                    <a href="#edit{{data.id}}" data-toggle="modal" class="btn btn-sm btn-primary"><i class="fas fa-edit    mr-2"></i>Edit</a>
+                    <a href="#delete{{data.id}}" data-toggle="modal" class="btn btn-sm btn-danger"><i class="fas fa-trash    mr-2"></i>Delete</a>
+                </div>
+                
+                <!-- Delete -->
+                <div class="modal fade" id="delete{{data.id}}" tabindex="-1" role="dialog" aria-labelledby="modelTitleId" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                                <div class="modal-header">
+                                        <h5 class="modal-title text-dark">Confirm Academic term Deletion</h5>
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                    </div>
+                            <div class="modal-body">
+                                <div class="container-fluid">
+                                    <form action="/delete_term/" method="post">
+                                        {% csrf_token %}
+                                        <input type="hidden" name="id" value="{{data.id}}">
+                                        <p class="text-dark">Are you sure you want to delete this term?</p>
+
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-sm btn-success" data-dismiss="modal">No</button>
+                                            <button type="submit" class="btn btn-sm btn-danger">Yes</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                            
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Edit  -->
+                <div class="modal fade" id="edit{{data.id}}" tabindex="-1" role="dialog" aria-labelledby="modelTitleId" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title text-dark">Edit Academic term</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                            </div>
+                            <div class="modal-body">
+                                <form action="/edit_term/" method="post">
+                                    {% csrf_token %}
+                                    <input type="hidden" name="id" value="{{data.id}}">
+
+                                    <div class="row">
+                                        <div class="form-group col-md-6 text-dark">
+                                            <label for="">Current Term:</label>
+                                            <input type="text" name="term" value="{{data.current_term}}" class="form-control" required>
+                                            
+                                        </div>
+                                        <div class="form-group col-md-6 text-dark">
+                                            <label for="">Current Year:</label>
+                                            <input type="text" name="year" value="{{data.current_year}}" class="form-control" value="{% now 'Y' %}" readonly>
+                                        </div>
+                                    </div>
+                        
+                                    <div class="row">
+                                        <div class="form-group col-md-6 text-dark">
+                                            <label for="">Start Date:</label>
+                                            <input type="date" name="start_date" value="{{data.start_date}}" class="form-control" required>
+                                        </div>
+                                        <div class="form-group col-md-6 text-dark">
+                                            <label for="">End Date:</label>
+                                            <input type="date" name="end_date" value="{{data.end_date}}" class="form-control" required>
+                                        </div>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-sm btn-secondary" data-dismiss="modal">Close</button>
+                                        <button type="submit" class="btn btn-sm btn-primary">Save</button>
+                                    </div>
+                                </form>
+                            </div>
+                            
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>
+<!-- inner-content -->
+
+{% endblock main %}

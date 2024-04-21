@@ -1,0 +1,193 @@
+{% extends 'frontend/base.html' %}
+{% block  title %} Dashboard {% endblock title %}
+{% block  pagetitle %} Dashboard {% endblock pagetitle %}
+
+{% block  main %} 
+
+<!-- inner-content -->
+<div class="inner-content pl-4 pr-4">
+    <div class="dashboard">
+
+        <!-- cards -->
+      <div class="cards">     
+
+        <div class="">
+            <a href="#" style="text-decoration: none;">
+                <div class="card stud_card">
+                    <div class="row">
+                        <div class="col-8 cbody">
+                            <h4>{{new_equipment_count}}</h4>
+                            <p>New Equipment</p>
+                        </div >
+    
+                        <div class="col-4 icon">
+                            <i class="fas fa-plus-circle" aria-hidden="true"></i>
+                        </div> 
+                    </div>
+                </div>
+            </a>
+        </div>
+
+        <div class="">
+            <a href="#" style="text-decoration: none;">
+                <div class="card session_card">
+                    <div class="row">
+                        <div class="col-8 cbody" >
+                            <h4>{{market_count}}</h4>
+                            <p>Market</p>
+                        </div>
+                        <div class="col-4 icon">
+                            <i class="fas fa-shopping-cart"></i>
+                        </div>
+                    </div>
+                </div>
+            </a>
+        </div>
+
+        <div class="">
+            <!-- <a href="#" style="text-decoration: none;"> -->
+            <a href="#" style="text-decoration: none;">
+                <div class="card staff-card ">
+                    <div class="row ">
+                        <div class="col-8 cbody">
+                            <h4>{{store_count}}</h4>
+                            <p>Retrieved</p>
+                        </div>
+                        <div class="col-4  icon">
+                            <i class="fas fa-warehouse"></i>
+                        </div>
+                    </div>
+                </div>
+            </a>
+        </div>
+
+        <div class="">
+            <a href="#" style="text-decoration: none;">
+            <!-- <a href="#" style="text-decoration: none;"> -->
+                <div class="card trcard">
+                    <div class="row">
+                        <div class="col-8 cbody">
+                            <h4>{{disposed_count}}</h4>
+                            <p>Disposed</p>
+                        </div >
+    
+                        <div class="col-4 icon">
+                            <i class="fas fa-trash-alt" aria-hidden="true"></i>
+                        </div> 
+                    </div>
+                </div>
+            </a>
+        </div>
+      </div>
+        <!-- cards -->
+
+        <!-- pie chart and bargraph-->
+        <div class="row mt-4">
+            <div class="col-md-4">
+                <div class="pie-chart shadow bg-light p-2 pb-5 rounded text-center">
+                    <h6>Equipment Status Pie Chart</h6>
+                    <canvas id="equipmentPieChart"></canvas>
+                </div>
+            </div>            
+            <div class="col-md-8 bar">
+                <div class="bar-chart shadow bg-light p-2 rounded pb-5 pl-5">
+                    <h6 class="text-center">Equipment Distribution Bar Graph</h6>
+                    <canvas id="equipmentBarChart"></canvas>
+                </div>                   
+            </div>
+        </div>
+           
+    </div>
+</div>
+<!-- inner-content -->
+
+<!-- charts.js cdn -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script>
+    const disposedCount = {{ disposed_count }};
+    const storeCount = {{ store_count }};
+    const marketCount = {{ market_count }};
+    const newEquipmentCount = {{ new_equipment_count }};
+    const assignedToStaff = {{ assigned_to_staff_count }};
+    
+    // Calculate total count
+    const totalCount = disposedCount + storeCount + marketCount + newEquipmentCount + assignedToStaff;
+    
+    // Calculate percentages
+    const disposedPercentage = (disposedCount / totalCount) * 100;
+    const storePercentage = (storeCount / totalCount) * 100;
+    const marketPercentage = (marketCount / totalCount) * 100;
+    const newEquipmentPercentage = (newEquipmentCount / totalCount) * 100;
+    const assignedToStaffPercentage = (assignedToStaff / totalCount) * 100;
+    
+    var pieCtx = document.getElementById("equipmentPieChart").getContext("2d");
+    var pieData = {
+        labels: ["Disposed", "Retrieved", "Market", "New Equipment", "Assigned to Staff"],
+        datasets: [{
+            data: [disposedPercentage, storePercentage, marketPercentage, newEquipmentPercentage, assignedToStaffPercentage],
+            backgroundColor: ["red", "blue", "green", "orange", "yellow"]
+        }]
+    };
+    var pieChart = new Chart(pieCtx, {
+        type: "pie",
+        data: pieData,
+        options: {
+            tooltips: {
+                callbacks: {
+                    label: function(tooltipItem, data) {
+                        var dataset = data.datasets[tooltipItem.datasetIndex];
+                        var total = dataset.data.reduce(function(previousValue, currentValue, currentIndex, array) {
+                            return previousValue + currentValue;
+                        });
+                        var currentValue = dataset.data[tooltipItem.index];
+                        var percentage = Math.round(((currentValue / total) * 100));
+                        return percentage + "%";
+                    }
+                }
+            }
+        }
+    });
+</script>
+<script>
+    // Ensure all variables have correct values
+    const disposedCounts = {{ disposed_count }};
+    const storeCounts = {{ store_count }};
+    const marketCounts = {{ market_count }};
+    const newEquipmentCounts = {{ new_equipment_count }};
+    const assignedToStaffs = {{ assigned_to_staff_count }};
+    
+    // Get the canvas context
+    var barCtx = document.getElementById("equipmentBarChart").getContext("2d");
+    
+    // Define chart data
+    var barData = {
+        labels: ["New Equipment","Market","Retrieved", "Assigned to Staff", "Disposed"],
+        datasets: [{
+            label: "Number of Equipment",
+            data: [newEquipmentCounts,marketCounts, storeCounts,  assignedToStaffs, disposedCounts],
+            backgroundColor: ["blue"],
+            borderWidth: 1
+        }]
+    };
+
+    // Create the chart
+    var barChart = new Chart(barCtx, {
+        type: "bar",
+        data: barData,
+        options: {
+            scales: {
+                yAxes: [{
+                    ticks: {
+                        beginAtZero: true
+                    }
+                }]
+            },
+            legend: {
+                display: false
+            }
+        }
+    });
+</script>
+
+{% endblock main %}

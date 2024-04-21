@@ -1,0 +1,68 @@
+{% extends 'frontend/base.html' %}
+{% block  title %} Agency List {% endblock title %}
+{% block  pagetitle %} Agency List {% endblock pagetitle %}
+{% load static %}
+{% block  main %} 
+
+<!-- inner-content -->
+<div class="inner-content">
+    <div class="list-header">
+        <div class="btns">
+            <a href="/agencyadd" class="btn btn-sm add-btn text-white mb-2 ml-3">Add Location</a>
+            <a href="" class="btn btn-sm bg-success text-white mb-2 ml-2 ">Export excel</a>
+        </div>
+        <div class="btns mb-3 ml-4">
+            <!-- <a href="/studentslist/" class="btn btn-sm btn-primary">View All</a> -->
+            {% for class in classes %}
+                <a href="/student-by-class/{{class.classid }}" class="btn btn-sm btn-danger">{{class.classname}}</a>
+            {% endfor %}
+        </div>
+    </div>
+    <div class="table-section" style="font-size: 14px;"> 
+        {% if messages %}
+            <ul class="messages">
+                <script>
+                    $(".alert").alert();
+                </script>
+                {% for message in messages %}
+                    <div class="alert alert-warning alert-dismissible fade show" role="alert" {% if message.tags %} class="{{ message.tags }}"{% endif %}>
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                        </button>
+                        <strong >{{ message }}</strong> 
+                    </div>
+                {% endfor %}
+            </ul>
+        {% endif %}
+        <table class="table" id="table">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Location Name</th>
+                    <th>PCC</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for agency in agencies %}
+                <tr>
+                    <td>{{ forloop.counter }}</td>
+                    <td>{{ agency.agency_name }}</td>
+                    <td>{{ agency.pcc }}</td>
+                     <td>   
+                        <!-- <a href="/showstudent/{{student.stdnumber}}" class="btn btn-sm btn-primary ">More ...</a>  -->
+                    </td>
+                </tr>
+                {% endfor %}  
+            </tbody>
+        </table>
+    </div>
+    <!-- student show -->
+    <div class="show_student">
+        
+    </div>
+</div>
+
+
+<!-- inner-content -->
+{% endblock main %}

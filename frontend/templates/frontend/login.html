@@ -1,0 +1,110 @@
+{% load custom_tags %}
+<!doctype html>
+{% load static %}
+<html lang="en">
+  <head>
+    <title>E-Asset | Login Page</title>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="{% static 'css/login.css' %}">
+
+    <!-- Font Awesome css -->
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.1/css/all.css" integrity="sha384-O8whS3fhG2OnA5Kas0Y9l3cfpmYjapjI0E4theH4iuMD+pLhbf6JI0jIMfYcK3yZ" crossorigin="anonymous">
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+  </head>
+  <body>
+    <!-- main -->
+    <div class="main">
+        <div class="container shadow">
+            <div class="row">
+                <!-- content contains badge, school name and a welcome message -->
+                <div class="content col-md-6 text-center">
+                    {% get_school_info as school_info %}
+                    {% if school_info %}
+                        {% for info in school_info %}
+                            <div class='header text-center p-2 mb-2 mt-4'>
+                                <img src="{{ info.badge.url }}" alt="{{ info.schoolname }} Badge">
+                                <h5 class="text-white text-uppercase mt-2"><b>{{ info.schoolname }}</b></h5>
+                                <h6 class="text-uppercase text-white">information management system</h6>
+                                
+                            </div>
+                            
+                            <!-- Display other school information as needed -->
+                        {% endfor %}
+                    {% else %}
+                        <div class='header text-center p-2 mb-2 mt-4'>
+                            <div class="badge p-3 mb-2" style="border: 2px solid #e4e4e4; border-radius: 50%;">
+                                <!-- <i class="fa fa-camera text-white" aria-hidden="true" style="font-size: 2rem;"></i> -->
+                                <img src="{% static 'images/travelport.png' %}" alt="Your Logo" class="logo-img">
+                            </div>
+                            <h5 class="text-white"><b>E-Asset Portal</b></h5>   
+                        </div>
+    
+                    {% endif %}
+                </div>
+    
+                <!-- login section for the user -->
+                <div class="loginform col-md-6">
+                    <form action="" method="POST" class="form shadow rounded">
+                        {% csrf_token %}
+                        <div class="title text-center">
+                            <h5>ADMIN LOGIN</h5>
+                        </div>
+                        {% if messages %}
+                            <ul class="messages">
+                                <script>
+                                  $(".alert").alert();
+                                </script>
+                                {% for message in messages %}
+                                    <div class="alert alert-warning alert-dismissible fade show" role="alert" {% if message.tags %} class="{{ message.tags }}"{% endif %}>
+                                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                        </button>
+                                        <strong >{{ message }}</strong> 
+                                    </div>
+                                {% endfor %}
+                            </ul>
+                        {% endif %}
+                        <div class="form-content p-3">
+                            <div class="form-group ">
+                                <label for="">Username / Email</label> <span class="text-danger ml-2"><b>*</b></span>
+                                <input type="text" name ="username" class="form-control" required/>
+                            </div>
+                            <div class="form-group ">
+                                <label for="">Password</label><span class="text-danger ml-2"><b>*</b></span>
+                                <input type="password" name="password" class="form-control" required/>
+                            </div>
+
+                            <button type="submit" class="btn btn-sm">Login</button>
+
+                            <div class="checkbox mt-3"><input type="checkbox" class="mr-2" name="" id=""><span>Remember me</span></div>
+                            
+                        </div>
+                    </form>
+                </div>
+                <!-- login section for the user -->
+            </div>
+        </div>
+    </div>
+    <!-- main -->
+      
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+    <!-- font awesome js -->
+    <script defer src="https://use.fontawesome.com/releases/v5.1.1/js/all.js" integrity="sha384-BtvRZcyfv4r0x/phJt9Y9HhnN5ur1Z+kZbKVgzVBAlQZX4jvAuImlIz+bG7TS00a" crossorigin="anonymous"></script>
+</body>
+</html>
+
+
+
+
+
+
+

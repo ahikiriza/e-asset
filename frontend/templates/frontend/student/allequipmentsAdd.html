@@ -1,0 +1,222 @@
+{% extends 'frontend/base.html' %}
+{% block  title %} All Equipment List {% endblock title %}
+{% block  pagetitle %} All Equipment List {% endblock pagetitle %}
+{% load static %}
+
+{% block  main %} 
+
+<!-- inner-content -->
+<div class="inner-content">
+    <!-- <div class=""> -->
+        <div class="btns">
+            <a href="/allequipmentlist" class="btn btn-sm add-btn text-white mb-2 ml-3">View Equipment</a>
+            <a href="#import" data-toggle="modal" class="btn btn-sm bg-success text-white mb-2 ml-2 ">Import excel</a>
+            <!-- <a href="{% static 'assets/students_template.xlsx' %}" class="btn btn-sm btn-primary float-right"> <i class="fas fa-download    "></i> Excel template</a> -->
+            <!-- import Modal -->
+            <div class="modal fade" id="import" tabindex="-1" role="dialog" aria-labelledby="modelTitleId" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header bg-primary">
+                            <h5 class="modal-title text-white">Import an excel or csv equipment list</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                        </div>
+                        <div class="modal-body">
+                            <form action="/import_equipment/" method="post" enctype="multipart/form-data">
+                                {% csrf_token %}
+                                <div class="form-group">
+                                    <label for="">Select File: </label><br>
+                                    <input type="file" name="equipment_file" id="">
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="submit" class="btn btn-sm btn-primary">Save</button>
+                                </div>
+                            </form>
+                        </div>
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+    <!-- </div> -->
+    <!-- form-section -->
+
+    <form action="submit/" method="POST" class="form ml-3 p-3 shadow rounded bg-light" enctype="multipart/form-data">
+        {% csrf_token %}
+
+        <div class="title">
+            <h5 class="text-uppercase text-center">Register Equipment</h5>
+            <hr>
+        </div>
+        <!-- Success message after data has been sent  -->
+        {% if messages %}
+        <ul class="messages">
+        {% for message in messages %}
+            <div class="alert alert-success alert-dismissible fade show" role="alert" {% if message.tags %} class="{{ message.tags }}"{% endif %}>
+              <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+              <strong>{{ message }}</strong> 
+            </div>
+        {% endfor %}
+        </ul>
+        {% endif %}
+
+
+        <!-- equipment info section -->
+        <div class="stud-info">
+            <div class="sub-heading">
+                <h5>Equipment Information</h5>
+            </div>
+            <div class="row">
+                <!-- name -->
+                <div class="form-group col-md-4">
+                    <label for="">Equipment Name <span class="text-danger">*</span></label>
+                    <input type="text" name="equipment_name" class="form-control" required>
+                </div>
+                <!-- brand-->
+                <div class="form-group col-md-4">
+                    <label for="">Brand </label>
+                    <input type="text" name="brand" class="form-control">
+                </div>
+                <!-- serial number -->
+                <div class="form-group col-md-4">
+                    <label for="">Serial Number <span class="text-danger">*</span></label>
+                    <input type="text" name="serial_number" class="form-control" required>
+                </div>                 
+            </div>
+            <div class="row">
+
+                <!-- purchase date -->
+                <div class="form-group col-md-4">
+                    <label for="">Purchase Date</label>
+                    <input type="date" name="purchase_date" class="form-control">
+                </div>
+               
+                <!-- purchase price -->
+                <div class="form-group col-md-4">
+                    <label for="">Purchase price (USD) <span class="text-danger">*</span></label>
+                    <input type="number" name="purchase_price" class="form-control" required>
+                </div>
+                <!-- supplier name -->
+                <div class="form-group col-md-4">
+                    <label for="">Supplier <span class="text-danger">*</span></label>
+                    <input type="text" name="supplier" class="form-control" required>
+                </div>  
+            </div>
+            <div class="row">
+                
+                <!-- Location-->
+                <div class="form-group col-md-4">
+                    <label for="">Location <span class="text-danger">*</span></label>
+                    <input type="text" name="location" class="form-control" required>
+                </div> 
+                <!-- agency-->
+                <div class="form-group col-md-4">
+                    <label for="">Delivered By <span class="text-danger">*</span></label>
+                    <select name="delivered_by" id="" class="form-control" required>
+                        <option value="">---</option>
+                        {% for staff in staffs %}
+                        <option value="{{ staff.name }}">{{ staff.name }}</option>
+                        {% endfor %}
+                    </select>
+                </div> 
+                <!-- delivery_date-->
+                <div class="form-group col-md-4">
+                    <label for="">Delivery Date </label>
+                    <input type="date" name="delivered_date" class="form-control">
+                </div>
+            </div>
+            <div class="row">  
+                <!-- retrieval date-->
+                <div class="form-group col-md-4">
+                    <label for="">Retrieval Date </label>
+                    <input type="date" name="retrieval_date" class="form-control">
+                </div> 
+                <!-- retrieved by -->
+                <div class="form-group col-md-4">
+                    <label for="">Retrieved By </label>
+                    <input type="text" name="retrieved_by" class="form-control">
+                </div> 
+                <!-- received by-->
+                <div class="form-group col-md-4">
+                    <label for="">Received By</label>
+                    <input type="text" name="received_by" class="form-control">
+                </div> 
+                </div>
+            <div class="row">
+                <!-- Equipment condition-->
+                <div class="form-group col-md-4">
+                    <label for="">Equipment Condition</label>
+                    <input type="text" name="equipment_condition" class="form-control">
+                </div> 
+                <!-- Disposal Reason-->
+                <div class="form-group col-md-4">
+                    <label for="">Disposal Reason</label>
+                    <input type="text" name="disposal_reason" class="form-control">
+                </div> 
+                    <!-- current status -->
+                <div class="form-group col-md-4">
+                    <label for="">Current Status <span class="text-danger">*</span></label>
+                    <select name="current_status" id="" class="form-control" required>
+                        <option value="">---</option>
+                        {% for status_value, status_display in current_statuses %}
+                        <option value="{{ status_value }}">{{ status_display }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <!-- retrieved -->
+                <!-- <div class="col-md-8">
+                    <div class="row">
+                        <div class="form-group col-md-6 ">
+                            <label for="">Equipment Condition </label>
+                            <input type="text" name="equipment_condition" class="form-control">
+                        </div>
+                    </div>
+                </div> -->
+                <!-- <div id="equipment_condition_section" class="col-md-8 retrieved" style="display: none;">
+                    <div class="row">
+                        <div class="form-group col-md-6">
+                            <label for="">Equipment Condition </label>
+                            <input type="text" name="equipment_condition" id="equipment_condition" class="form-control">
+                        </div>
+                    </div>
+                </div> -->
+                <!-- disposed -->
+                <!-- <div class="col-md-8 disposed" style="display: none;">
+                    <div class="row">
+                        <div class="form-group col-md-6 ">
+                            <label for="">Disposal Date </label>
+                            <input type="date" name="disposal_date" class="form-control">
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label for="">Disposal Reason </label>
+                            <input type="text" name="disposal_reason" class="form-control">
+                        </div>
+                    </div>
+                </div> -->
+                <!-- assigned to staff -->
+                <!-- <div class="col-md-8 assigned_staff" style="display: none;">
+                    <div class="row">
+                        <div class="form-group col-md-6 ">
+                            <label for="">Staff Name </label>
+                            <input type="date" name="staff_name" class="form-control">
+                        </div>
+                    </div>
+                </div>              -->
+
+            </div>
+                
+            
+            <div class="form-group">
+                <button style="width: 100px;" type="submit" class="btn btn-sm bg-dark text-white">SUBMIT</button>
+            </div>
+        </div>     
+         
+    </form>
+    <!-- form-section -->
+
+</div>
+<!-- inner-content -->
+{% endblock main %}

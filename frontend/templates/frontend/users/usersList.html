@@ -1,0 +1,105 @@
+{% extends 'frontend/base.html' %}
+{% block  title %} Users List {% endblock title %}
+{% block  pagetitle %} Users List {% endblock pagetitle %}
+
+{% block  main %} 
+
+<!-- inner-content -->
+<div class="inner-content">
+    <div class="btns">
+        <a href="/addusers" class="btn btn-sm add-btn text-white mb-2 ml-3">Add User</a>
+        <a href="" class="btn btn-sm bg-success text-white mb-2 ml-2 ">Export excel</a>
+    </div>
+    <div class="table-section" style="font-size: 14px;"> 
+        
+        <table class="table" id="table">
+            <thead>
+                <tr>
+                    <th>User ID</th>
+                    <th>Full Name</th>
+                    <th>Username</th>
+                    <th>Date of Birth</th>
+                    <th>Contact</th>
+                    <th>Email Address</th>
+                    <th>Address</th>
+                    <th>Role</th>
+                     <th>Gender</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>U001</td>
+                    <td>Mukisa Junior</td>
+                    <td>Junior Mukisa</td>
+                    <td>+256 7500000000</td>
+                    <td>junior@gmail.com</td>
+                    <td>Kitchen Manager</td>
+                    <td>123</td>
+                    <td>11-98-34</td>
+                    <td>male</td>
+                  
+                    
+                  
+                    <td>
+                        <a href="" id="RS001" class="btn btn-sm btn-primary more">More ...</a>
+                        
+                    </td>
+                </tr>
+                <tr>
+                    <td>U001</td>
+                    <td>Mukisa Junior</td>
+                    <td>Junior Mukisa</td>
+                    <td>+256 7500000000</td>
+                    <td>junior@gmail.com</td>
+                    <td>Kitchen Manager</td>
+                    <td>123</td>
+                    <td>11-98-34</td>
+                    <td>male</td>
+                    
+                    <td>
+                        <a href="" id="RS001" class="btn btn-sm btn-primary more">More ...</a>
+                    </td>
+                </tr>
+                <tr>
+                    <td>U001</td>
+                    <td>Mukisa Junior</td>
+                    <td>Junior Mukisa</td>
+                    <td>+256 7500000000</td>
+                    <td>junior@gmail.com</td>
+                    <td>Kitchen Manager</td>
+                    <td>123</td>
+                    <td>11-98-34</td>
+                    <td>male</td>
+                    
+                    
+                    <td>
+                        <a href="" id="RS001" class="btn btn-sm btn-primary more">More ...</a>
+                    </td>
+                </tr>
+                <tr>
+                    <td>U001</td>
+                    <td>Mukisa Junior</td>
+                    <td>Junior Mukisa</td>
+                    <td>+256 7500000000</td>
+                    <td>junior@gmail.com</td>
+                    <td>Kitchen Manager</td>
+                    <td>123</td>
+                    <td>11-98-34</td>
+                    <td>male</td>
+                    
+                    <td>
+                        <a href="" id="RS001" class="btn btn-sm btn-primary more">More ...</a>
+                    </td>
+                </tr>
+                
+            </tbody>
+        </table>
+    </div>
+    <!-- student show -->
+    <div class="show_user">
+        
+    </div>
+</div>
+<!-- inner-content -->
+{% endblock main %}

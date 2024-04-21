@@ -1,0 +1,443 @@
+
+*{
+    box-sizing: border-box;
+    user-select: none;
+    margin: 0;
+    padding: 0;
+}
+
+
+.main{
+    display: flex;
+    width: 100%;
+    /* position: fixed; */
+    height: 100%;
+    overflow: hidden;
+}
+.sidebar{
+    background-color: #1b1415;
+    height: 100vh;
+    width: 15%;
+    overflow: hidden;
+    overflow-y: auto;
+}
+.content{
+    width: 85%;
+}
+
+.inner-content{
+    padding: 10px;
+    height: 80vh;
+    overflow: hidden;
+    overflow-y: scroll;
+    /* display: none; */
+}
+.header img{
+    width: 50px;
+    
+}
+
+.sidebar ul{
+    list-style-type: none;
+    padding-left: 10%;
+}
+
+.sidebar-links li a{
+    color: #fff;
+    text-decoration: none;
+}
+
+.sidebar-links li a:hover
+{
+    color: #d79430;
+}
+.sidebar-links li a:active
+{
+    color: #0024f2;
+}
+
+/* sidebar sub menu */
+.sidebar-links .main-menu a, .sidebar-links .main-menu .chevron
+{
+    color: #fff;
+    text-decoration: none;
+}
+
+.submenu-staff
+{
+    display: none;
+}
+
+.submenu li, .submenu-staff li, .submenu-acc li, .submenu-acad li, .submenu-agency, .submenu-users li
+{
+    padding-left: 5%;
+    line-height: 38px;
+
+}
+.submenu li a, .submenu-staff li a, .submenu-acc li a, .submenu-acad li a, .submenu-agency li a, .submenu-users li a
+{
+    color: #fff;
+    text-decoration: none;
+    font-size: 14px;
+    
+}
+
+.sidebar .dismiss {
+    font-weight: 800;
+    display:none;
+    font-size: 1.5rem;
+
+}
+
+
+/* sidebar sub menu */
+
+.navbar
+{
+    color: black;
+}
+
+.brand
+{
+    margin-left: 20px;
+}
+
+.brand a
+{
+    margin-left: 10px;
+}
+
+.right
+{
+    align-items: center;
+}
+.footer{
+    color: #000;
+    height: 8%;
+    margin-top: 20%;
+    position: absolute;
+    bottom: 0;
+    width: 85%;
+}
+/* table */
+.inner-content .add-btn
+{
+    background-color: #d79430;
+}
+.inner-content .table-section
+{
+    padding: 3px 15px;
+    /* background-color: #fff; */
+    border-radius: 10px;
+}
+.table-section .table thead
+{
+    background-color: rgb(26, 1, 1);
+    color: #fff;
+}
+
+.table-section .table tbody tr td{
+    background-color: #fff;
+    border: 1px solid #000;
+}
+
+/* table */
+
+.cards{
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    /* display: none; */
+}
+
+.cards .card{
+    margin: 10px;
+}
+
+.cards .card:hover{
+    background-color: rgb(95, 86, 86);
+}
+
+.cards .session_card
+{
+    background-color: blue;
+}
+
+.cards .stud_card
+{
+    background-color: green;
+}
+
+.cards .card .icon{
+    font-size: 2rem;
+    align-items: center;
+    justify-content: center;
+    padding-right: 50px;
+    padding-top: 10px;
+    color: #fff;
+    
+}
+
+.cards .card{
+    text-align: center;
+    padding-top: 20px;
+    color: #fff;
+    border-radius: 5px;
+    /* display: none; */
+    box-shadow: 2px 2px 2px 2px rgb(64, 43, 43);
+}
+
+.cards .card:hover{
+    background-color: rgb(95,86,86);
+}
+
+.card .cbody
+{
+    border-right: 3px solid #fff;
+    margin-bottom: 10px;
+}
+
+.cards .session_card{
+    background-color: blue;
+}
+
+.cards .stud_card{
+    background-color: green;
+}
+
+.cards .trcard{
+    background-color: red;
+}
+.cards .staff-card{
+    background-color: #f9b855;
+}
+.pie-chart {
+    /* width: 400px; */
+    height: 300px;
+    padding-top: 10px;
+  }
+  .bar-chart {
+    /* width: 1000px; */
+    height: 300px;
+    padding-top: 10px;
+  }
+  .line-chart {
+    /* width: 600px; */
+    height: 300px;
+    background-color: #c5b9b9;
+    border-radius: 10px;
+    color: #fff;
+  }
+
+.sub-heading h5{
+    font-size: 24px;
+    margin-bottom: 15x;
+}
+
+.footer{
+    background-color: #251a1b;
+    color: #fff;
+    height: 5vh;
+}
+
+/* toggle actions */
+.sidebar.active{
+    width: 8%;
+}
+
+.content.active{
+    width: 92%;
+}
+
+.sidebar.active .header h5{
+    font-size: 13px;
+}
+
+.sidebar.active .sidebar-links ul li span{
+    display: none;
+}
+
+.sidebar.active .sidebar-links span{
+    display: none;
+}
+
+.sidebar.active .sidebar-links li{
+    padding: 0 15px;
+}
+/* toggle actions */
+
+.student-details .image img{
+    width: 100%;
+    height: 100%;
+    /* border-radius: 40%; */
+    
+}
+
+.student-details .image{
+    border-right: 2px solid #251a1b;
+    padding-right: 20px;
+}
+
+.student-data table tr td{
+    border: 1px solid;
+    height: 10px;
+}
+
+.list-header{
+    display: flex;
+}
+
+.student-details .image img{
+    /* display: none; */
+    height: 50vh;
+}
+
+.image_icon
+{
+    font-size: 4rem;
+    border-radius: 50%;
+    position: absolute;
+    margin-top: -60px;
+    left: 340;
+    color: #ffffff;
+    background: #f00;
+}
+/* small screen */
+@media (max-width: 770px){
+    tbody td{
+        min-width: 90px;
+    }
+    .main{
+        height: 100vh;
+    }
+
+    .sidebar{
+        display: none;
+    }
+
+    .content{
+        width: 100%;
+    }
+
+    .card
+    {
+        margin-bottom: 20px;
+    }
+    .footer{
+        width: 100%;
+        height: 60px;
+        padding-top: 12px;
+    }
+
+    .pie-chart, .bar-chart{
+        margin-bottom: 20px;
+    }
+
+    /* toggle actions */
+    .sidebar.active{
+        display: block;
+        width: 100%;
+    }
+    .sidebar.active .header h5{
+        font-size: 20px;
+    }
+    .sidebar.active .sidebar-links ul li span{
+        display: inline;
+    }
+    
+    .sidebar.active .sidebar-links span{
+        display: inline;
+    }
+    
+    .sidebar.active .sidebar-links li{
+        padding: 0 15px;
+    }
+
+    .sidebar.active .dismiss{
+        display: block;
+        margin: 10px;
+        border-radius: 25px;
+
+    }
+
+    .content.active{
+        width: 0;
+    }
+    /* toggle actions */
+
+    .cards{
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        /* display: none; */
+    }
+
+    .cards .card{
+        height: 13vh;
+        padding: 10px 5px;
+        margin: 10px 7px;
+        box-shadow: 1px 1px 1px 1px black;
+    }
+
+    .cards .card .icon{
+        font-size: 1.5rem;
+        align-items: center;
+        justify-content: center;
+        padding: 15px 5px;
+        color: #fff;
+    }
+
+    .current_date{
+        display: none;
+    }
+
+    .inner-content{
+        margin-left: -10px;
+    }
+
+    .list-header{
+        display: block;
+    }
+    /* Apply horizontal scrolling to the table */
+    .table-section {
+        overflow-x: auto;
+        width: 99%;
+        margin-bottom: 30px;
+    }
+    
+    /* Fix the dataTable_filter and dataTable_length sections */
+    .dataTables_wrapper {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .dataTables_filter {
+        /* flex-grow: 1; */
+        margin-bottom: 10px; /* Adjust the margin as needed */
+        margin-right: -5px;
+        flex: 0 0 auto;
+    }
+    .dataTables_filter input{
+        width: 150px;
+    }
+
+    .dataTables_length {
+        margin-bottom: 10px; /* Adjust the margin as needed */
+        margin-right: 10px;
+        flex: 0 0 auto;
+    }
+
+    /* modal content styling */
+
+
+    /* end of modal content styling */
+    /* edting show student */
+    /* .student-details .image img{ */
+        /* display: none; */
+        /* height: 30vh;
+    } */
+   
+}
+/* small screen */
+
+

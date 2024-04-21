@@ -1,0 +1,245 @@
+{% extends 'frontend/base.html' %}
+{% block  title %} All Equipment List {% endblock title %}
+{% block  pagetitle %} All Equipment List {% endblock pagetitle %}
+{% load static %}
+{% block  main %} 
+
+<!-- inner-content -->
+<div class="inner-content">
+    <div class="list-header">
+        <div class="btns">
+            <a href="/addallequipment" class="btn btn-sm add-btn text-white mb-2 ml-3">Add Equipment</a>
+            <!-- <a href="/export-excel" class="btn btn-sm bg-success text-white mb-2 ml-2 ">Export excel</a> -->
+            <a href="/export_equipment" class="btn btn-sm bg-success text-white mb-2 ml-2 ">Export excel</a>
+        </div>
+        <!-- <div class="btns mb-3 ml-4">
+            <a href="/studentslist/" class="btn btn-sm btn-primary">View All</a>
+            {% for class in classes %}
+                <a href="/student-by-class/{{class.classid }}" class="btn btn-sm btn-danger">{{class.classname}}</a>
+            {% endfor %}
+        </div> -->
+    </div>
+    <div class="table-section" style="font-size: 14px;"> 
+        {% if messages %}
+            <ul class="messages">
+                <script>
+                    $(".alert").alert();
+                </script>
+                {% for message in messages %}
+                    <div class="alert alert-warning alert-dismissible fade show" role="alert" {% if message.tags %} class="{{ message.tags }}"{% endif %}>
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                        </button>
+                        <strong >{{ message }}</strong> 
+                    </div>
+                {% endfor %}
+            </ul>
+        {% endif %}
+        <table class="table" id="table">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>Brand</th>
+                    <th>S\N</th>
+                    <th>Purchase Date</th>
+                    <th> Purchase price(USD)</th>
+                    <th>Supplier </th>
+                    <th>Location </th>
+                    <th>Delivered By </th>
+                    <th>Delivery Date </th>
+                    <th>Retrieval Date </th>
+                    <th>Retrieved By</th>
+                    <!-- <th>Received By</th> -->
+                    <th>Current Status</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for equipment in equipments %}
+                <tr>
+                    <td>{{ forloop.counter }}</td>
+                    <td>{{ equipment.equipment_name }}</td>
+                    <td>{{ equipment.brand }}</td>
+                    <td>{{ equipment.serial_number }}</td>
+                    <td>{{ equipment.purchase_date }}</td>
+                    <td>{{ equipment.purchase_price }}</td>
+                    <td>{{ equipment.supplier }}</td>
+                    <td>{{ equipment.location }}</td>
+                    <td>{{ equipment.delivered_by__name }}</td>
+                    <td>{{ equipment.delivered_date }}</td>
+                    <td>{{ equipment.retrieval_date }}</td>
+                    <td>{{ equipment.retrieved_by }}</td>
+                    <!-- <td>{{ equipment.received_by }}</td> -->
+                    <td>{{ equipment.current_status }}</td>
+                    <td>   
+                        <!-- <a href="/showstudent/{{student.stdnumber}}" class="btn btn-sm btn-primary ">More ...</a>  -->
+                        <div class="btn-group">
+                            <a href="#edit{{ equipment.equipment_id }}" class="btn btn-sm btn-primary" data-toggle="modal"><i class="fas fa-pencil-alt"></i> </a>
+                            <a href="#delete{{ equipment.equipment_id }}" class="btn btn-sm btn-danger" data-toggle="modal"><i class="fas fa-trash mr-1"></i> </a>
+                        </div>
+                        <!-- delete modal-->
+                        <div class="modal fade" id="delete{{equipment.equipment_id}}" tabindex="-1" role="dialog" aria-labelledby="modelTitleId" aria-hidden="true">
+                            <div class="modal-dialog" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title">Delete {{equipment.equipment_name}}</h5>
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <form action="/delete_equipment/" method="post">
+                                            {% csrf_token%}
+                                            <input type="hidden" name="equipment_id" value="{{equipment.equipment_id}}">
+                                            <p>Are you sure you want to delete {{equipment.equipment_name}}</p>
+            
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-sm btn-success" data-dismiss="modal">No</button>
+                                                <button type="submit" class="btn btn-sm btn-danger">Yes</button>
+                                            </div>
+                                        </form>
+                                        
+                                    </div>
+                                    
+                                </div>
+                            </div>
+                        </div>
+                        <!-- end delete modal -->
+                        <!-- Modals for editing equipment information -->
+                        <div class="modal fade" id="edit{{ equipment.equipment_id }}" tabindex="-1" role="dialog" aria-labelledby="editModalLabel" aria-hidden="true">
+                            <div class="modal-dialog" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="editModalLabel">Edit Equipment</h5>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <!-- Add a form for editing support staff information -->
+                                        <form method="post" action="/edit_equipment/">
+                                            {% csrf_token %}
+                                            <input type="hidden" name="equipment_id" value="{{ equipment.equipment_id }}">
+                                            <div class="stud-info">
+                                                <div class="sub-heading">
+                                                    <!-- <h5>Equipment Informat ion</h5> -->
+                                                </div>
+                                                <div class="row">
+                                                    <!-- Equipment Name -->
+                                                    <div class="form-group col-md-6">
+                                                        <label for="">Equipment Name:</label>
+                                                        <input type="text" name="equipment_name" class="form-control" value="{{ equipment.equipment_name }}" required>
+                                                    </div>
+                                                    <!-- Brand -->
+                                                    <div class="form-group col-md-6">
+                                                        <label for="">Brand:</label>
+                                                        <input type="text" name="brand" class="form-control" value="{{ equipment.brand }}">
+                                                    </div>
+                                                    <!-- Serial Number -->
+                                                    <div class="form-group col-md-6">
+                                                        <label for="">Serial Number:</label>
+                                                        <input type="text" name="serial_number" class="form-control" value="{{ equipment.serial_number }}" required>
+                                                    </div>
+                                                    <!-- Purchase Date -->
+                                                    <div class="form-group col-md-6">
+                                                        <label for="purchase_date">Purchase Date:</label>
+                                                        <input type="date" name="purchase_date" id="purchase_date" class="form-control" value="{{ equipment.purchase_date|date:'Y-m-d' }}">
+                                                    </div>
+                                                </div>
+                                                <div class="row">   
+                                                    <!-- Purchase Price -->
+                                                    <div class="form-group col-md-6">
+                                                        <label for="">Purchase Price:</label>
+                                                        <input type="number" name="purchase_price" class="form-control" value="{{ equipment.purchase_price }}" required>
+                                                    </div>
+                                                    <!-- Supplier -->
+                                                    <div class="form-group col-md-6">
+                                                        <label for="">Supplier:</label>
+                                                        <input type="text" name="supplier" class="form-control" value="{{ equipment.supplier }}" required>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <!-- Agency -->
+                                                    <div class="form-group col-md-6">
+                                                        <label for="">Location:</label>
+                                                        <input type="text" name="location" class="form-control" value="{{ equipment.location }}" required>
+                                                        <!-- <select name="agency" id="" class="form-control" required>
+                                                            {% for agency in agencies %}
+                                                                {% if agency.agency_name == equipment.agency__agency_name %}
+                                                                    <option value="{{ agency.agency_name }}" selected>{{ agency.agency_name }}</option>
+                                                                {% else %}
+                                                                    <option value="{{ agency.agency_name }}">{{ agency.agency_name }}</option>
+                                                                {% endif %}
+                                                            {% endfor %}
+                                                        </select> -->
+                                                    </div>
+                                                    <!-- Delivered By -->
+                                                    <div class="form-group col-md-6">
+                                                        <label for="">Delivered By:</label>
+                                                        <select name="delivered_by" id="" class="form-control" required>
+                                                            {% for staff in staffs %}
+                                                                {% if staff.name == equipment.delivered_by__name %}
+                                                                    <option value="{{ staff.name }}" selected>{{ staff.name }}</option>
+                                                                {% else %}
+                                                                    <option value="{{ staff.name }}">{{ staff.name }}</option>
+                                                                {% endif %}
+                                                            {% endfor %}
+                                                        </select>
+                                                    </div>
+                                                    <!-- Delivery Date -->
+                                                    <div class="form-group col-md-6">
+                                                        <label for="">Delivery Date:</label>
+                                                        <input type="date" name="delivered_date" class="form-control " value="{{ equipment.delivered_date|date:'Y-m-d' }}">                                                    </div>
+                                                    <!-- Retrieval Date -->
+                                                    <div class="form-group col-md-6">
+                                                        <label for="retrieval_date">Retrieval Date:</label>
+                                                        <input type="date" id="retrieval_date" name="retrieval_date" class="form-control" value="{{ equipment.retrieval_date|date:'Y-m-d' }}">
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    
+                                                    <!-- Retrieved By -->
+                                                    <div class="form-group col-md-6">
+                                                        <label for="">Retrieved By:</label>
+                                                        <input type="text" name="retrieved_by" class="form-control" value="{{ equipment.retrieved_by }}">
+                                                    </div>
+                                                    <!-- Current Status -->
+                                                    <div class="form-group col-md-6">
+                                                        <label for="">Current Status:</label>
+                                                        <select name="current_status" id="" class="form-control" required>
+                                                            {% for status_value, status_display in current_statuses %}
+                                                                {% if status_value == equipment.current_status %}
+                                                                    <option value="{{ status_value }}" selected>{{ status_display }}</option>
+                                                                {% else %}
+                                                                    <option value="{{ status_value }}">{{ status_display }}</option>
+                                                                {% endif %}
+                                                            {% endfor %}
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <button style="width: 120px;" type="submit" class="btn btn-sm bg-success text-white">Save changes</button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- end of modals -->
+                    </td>
+                </tr>
+                {% endfor %}  
+            </tbody>
+        </table>
+    </div>
+    <!-- student show -->
+    <!-- <div class="show_student">
+        
+    </div> -->
+</div>
+
+
+<!-- inner-content -->
+{% endblock main %}

@@ -1,0 +1,315 @@
+{% load custom_tags %}
+<!DOCTYPE html>
+{% load static %}
+
+
+<html lang="en">
+  <head>
+    <title>E-Asset | {% block title %}{% endblock title %}</title>
+    <!-- Required meta tags -->
+    
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- calendar link -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.10.2/fullcalendar.min.css" rel="stylesheet" />
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <link rel="stylesheet" href="{% static 'css/cal.css' %}">
+    <!-- Fontawesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" integrity="sha384-vpXtB+IuSt5xeIoRZy5o/xpMwXbhCsBBOtDKfUfWJB0mzzM9b9AqPWPhdbtf1KVg" crossorigin="anonymous">
+    
+    <!-- jquery datatables -->
+    <link rel="stylesheet" href="//cdn.datatables.net/1.13.5/css/jquery.dataTables.min.css">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <!-- animate CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@4.1.1/animate.min.css">
+    
+    <style>
+        
+    </style>
+</head>
+  <body>
+    
+
+    <div class="main">
+        <!-- sidebar -->
+        <aside class="sidebar">
+            <div class="dismiss">
+                <i class="fas fa-bars    text-white"></i>
+            </div>
+            {% get_school_info as school_info %}
+            {% if school_info %}
+                {% for info in school_info %}
+                    <div class='header text-center p-2 mb-2 mt-4'>
+                        <img src="{{ info.badge.url }}" alt="{{ info.schoolname }} Badge">
+                        <h5 class="text-white"><b>{{ info.schoolname }}</b></h5>
+                        
+                    </div>
+                    
+                    <!-- Display other Equipment information as needed -->
+                {% endfor %}
+            {% else %}
+                <div class='header text-center p-2 mb-2 mt-4'>
+                    <div class="badge p-3 mb-2" style="border: 2px solid #020000; border-radius: 50%; background-color: #fff;">
+                        <!-- <i class="fa fa-camera text-white" aria-hidden="true" style="font-size: 2rem;"></i> -->
+                        <img src="{% static 'images/travelport.png' %}" alt="Your Logo" class="logo-img">
+                    </div>
+
+                    <h5 class="text-white"><b>E-Asset</b></h5>   
+                </div>
+            {% endif %}
+            
+            <hr color="#636161" style="height: 3px;">
+
+            <ul class='sidebar-links pt-3'>
+                <li class="sidebar-item active">
+                    <a class="" href='/dashboard'><i class="fas fa-home  mr-2  "></i><span>Dashboard</span></a>
+                    
+                </li>
+                <hr color="#636161">
+                <li>
+                    <div class="main-menu d-flex justify-content-between">
+                        <a class="" href='/equipment'><i class="fas fa-toolbox    mr-2"></i><span>All Equipment</span></a>
+                        <div class="chevron">
+                            <i class="fas fa-chevron-right    mr-2"></i>
+                        </div>
+                    </div>
+                    <!-- sub menu -->
+                    <ul class="submenu">
+                        <li>
+                            <a href="/allequipmentlist"><i class="fas fa-list    mr-2"></i> <span> List</span></a>
+                        </li>
+                        <li>
+                            <a href="/addallequipment"> <i class="fas fa-plus    mr-2"></i> <span>Add</span></a>
+                        </li>
+                    </ul>
+                </li>
+                <hr color="#636161">                      
+                <li>
+                    <div class="main-menu-acad d-flex justify-content-between">
+                        <a class="" href='/staff'><i class="fas fa-user  mr-2"></i><span>Staff</span></a>
+                        <div class="chevron-acad text-white">
+                            <i class="fas fa-chevron-right    mr-2"></i>
+                        </div>
+                    </div>
+                    <!-- sub menu -->
+                    <ul class="submenu-acad">
+                        <li>
+                            <a href="/staff-list"><i class="fas fa-list    mr-2"></i> <span> List</span></a>
+                        </li>
+                        <li>
+                            <a href="/add-staff"> <i class="fas fa-plus    mr-2"></i> <span>Add</span></a>
+                        </li>
+                    </ul>
+                </li>
+                <hr color="#636161">
+                <!-- <li>
+                    <div class="main-menu-agency d-flex justify-content-between">
+                        <a class="" href='./location'><i class="fas fa-building    mr-2"></i><span>Location</span></a>
+                        <div class="chevron-agency text-white">
+                            <i class="fas fa-chevron-right    mr-2"></i>
+                        </div>
+                    </div> -->
+                    <!-- sub menu -->
+                    <!-- <ul class="submenu-agency">
+                        <li>
+                            <a href="/agency-list"><i class="fas fa-list    mr-2"></i> <span> List</span></a>
+                        </li>
+                        <li>
+                            <a href="/agencyadd"> <i class="fas fa-plus    mr-2"></i> <span>Add</span></a>
+                        </li>
+                    </ul>
+                </li>
+                <hr color="#636161"> -->
+                <li>
+                    <div class="main-menu-acc d-flex justify-content-between">
+                        <a class="" href='/fixtures & fittings'><i class="fas fa-warehouse mr-2"></i><span>Fixtures & Fittings</span></a>
+                        <div class="chevron-acc text-white">
+                            <i class="fas fa-chevron-right    mr-2"></i>
+                        </div>
+                    </div>
+                    <!-- sub menu -->
+                    <ul class="submenu-acc">
+                        <li>
+                            <a href="/assetlist"><i class="fas fa-list    mr-2"></i> <span> List</span></a>
+                        </li>
+                        <li>
+                            <a href="/addasset"> <i class="fas fa-plus    mr-2"></i> <span>Add</span></a>
+                        </li>
+                    </ul>
+                </li>
+                <hr color="#636161">
+                <li class="sidebar-item">
+                    <div class="main-menu-staff d-flex justify-content-between">
+                        <a class="" href='/reports'><i class="fas fa-file    mr-2"></i><span>Reports</span></a>
+                        <div class="chevron0 text-white">
+                            <i class="fas fa-chevron-right    mr-2"></i>
+                        </div>
+                    </div>
+                    
+                    <ul class="submenu-staff">
+                        <li>
+                            <div class="main-submenu7 d-flex justify-content-between">
+                                <a class="" href='/equipmentslist'><i class="fas fa-plus-circle    mr-2"></i><span>New</span></a>
+                            </div>
+                        </li>
+                        <li>    
+                            <div class="main-submenu8 d-flex justify-content-between">
+                                <a class="" href='/marketequipment'><i class="fas fa-shopping-cart    mr-2"></i><span>Market</span></a>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="main-submenu9 d-flex justify-content-between">
+                                <a class="" href='/retrieved-list'><i class="fas fa-warehouse   mr-2"></i><span>Retrieved</span></a>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="main-submenu0 d-flex justify-content-between">
+                                <a class="" href='/disposed-equipment'><i class="fas fa-trash-alt mr-2"></i><span>Disposed</span></a>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="main-submenu5 d-flex justify-content-between">
+                                <a class="" href='/staffequipment'><i class="fas fa-user    mr-2"></i><span>Assigned to Staff</span></a>
+                            </div>
+                        </li>
+                    </ul>
+                </li> 
+                <hr color="#636161">
+                <li>
+                    <!-- <a class="" href='#'><i class="fas fa-cogs    mr-2"></i><span>Settings</span></a> -->
+                    <!-- /settings/enrollment -->
+                    <!-- <hr className='mt-3' /> -->
+                </li>
+                <!-- <hr color="#fff"> -->
+            </ul>
+        </aside>
+
+        <!-- sidebar -->
+        <!-- content -->
+        <div class="content bg-light">
+
+            <!-- navbar -->
+            <nav class="navbar bg-light shadow align-items-center">
+                <div class='brand'>
+                    <i class="fas fa-bars " ></i>    
+                </div>
+                <div class="current_date ml-5"> 
+                    <a class="btn btn-sm btn-primary text-white p-2">Current Date: </a>
+                    <a class="btn btn-sm btn-dark text-white p-2" style="margin-left: -8px;">{% now 'l. d M, Y' %} </a>
+                </div>
+                <div class="right d-flex al">
+                    {% if user.is_authenticated %}
+                    <p class=' mr-2'><i class="fas fa-user-circle   mr-2 "></i>{{ user.username }}</p>
+                    {% endif %}
+                    <a class="ml-3 mr-2 text-danger" href="/logout">
+                        <p class="ml-3 mr-2"><i class="fas fa-power-off mr-2"></i>Logout</p>
+                    </a>
+                </div>  
+            </nav>
+            <!-- navbar -->
+
+            <!-- page header -->
+            <div class="m-2 mt-3">
+                <a href="/dashboard" class="text-dark"><i class="fas fa-home    mr-2"></i> </a>
+                <span><b> -> </b> {% block pagetitle %}{% endblock pagetitle %} </span>
+            </div>
+            <!-- page header -->
+
+            <!-- extending to other pages -->
+            {% block main %}
+            {% endblock main %}
+            <!-- extending to other pages -->
+            <footer class="footer">
+                <div class="container"><p class="text-center">All Rights Reserved | &copy; {% now 'Y' %} Travelport</p></div>
+
+            </footer>
+        </div>
+        <!-- content -->
+    </div>
+      
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+    <script defer src="https://use.fontawesome.com/releases/v5.1.1/js/all.js" integrity="sha384-BtvRZcyfv4r0x/phJt9Y9HhnN5ur1Z+kZbKVgzVBAlQZX4jvAuImlIz+bG7TS00a" crossorigin="anonymous"></script>
+
+    <!-- ajax -->
+      <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+
+    <!-- datatables -->
+    <script src="//cdn.datatables.net/1.13.5/js/jquery.dataTables.min.js"></script>
+
+    <!-- custom js -->
+    <script src="{% static 'js/scripts.js' %}"></script>
+
+    <!-- charts.js cdn -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <script src="{% static 'js/charts.js' %}"></script>
+    <!-- <script src="{% static 'js/calendar.js' %}"><  /script> -->
+    <script src="{% static 'js/script.js' %}"></script>
+
+    <script>
+        
+    </script>
+    
+    <script>
+        $(document).ready(function(){
+            $('#emails').on('change' , function(){
+                const email = $(this).val();
+
+                $.ajax({
+                    url: `/admincheckemail/${email}/`,
+                    type: 'GET',
+                    dataType: 'json',
+                    success: function(data) {
+                        $('#result').html(data)
+                    },
+                    error: function(error) {
+                        console.log('Error:', error);
+                    }
+                });
+
+            });
+        });
+    </script>
+
+    <script>
+       $(document).ready(function() {
+        $('#class_name').on('change', function() {
+            const classId = $(this).val();
+            const subjectSelect = $('#subject');
+            console.log('Selected Class ID:', classId);
+
+            // Fetch subjects for the selected class using AJAX
+            $.ajax({
+                url: `/get_subjects/${classId}/`,
+                type: 'GET',
+                dataType: 'json',
+                success: function(data) {
+                    console.log('Received Data:', data);
+                    subjectSelect.empty(); // Clear previous options
+                    $.each(data, function(index, subject) {
+                        subjectSelect.append($('<option>', {
+                            value: subject.subjectid,
+                            text: subject.subjectname
+                        }));
+                    });
+                },
+                error: function(error) {
+                    console.log('Error:', error);
+                }
+            });
+        });
+    });
+    </script>
+    
+    
+</body>
+
+</html>
