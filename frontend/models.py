@@ -168,7 +168,15 @@ class Role_Model(models.Model):
     rolename = models.CharField(max_length=255, verbose_name='Role Name')
     Display_Roles = ['rolename']    
 
-
+# Other users model
+class OtherUsers(models.Model):
+    id = models.AutoField(primary_key=True)
+    full_name =models.CharField(max_length=255, blank=True, verbose_name="Full Name")
+    username = models.CharField(max_length=25, blank=True, verbose_name="Username")
+    email = models.EmailField(max_length=254, default=None, verbose_name="Email")
+    password = models.CharField(max_length=255, verbose_name='Enter the password')
+    
+    Display_Login_Fields = ['full_name','username','email','password']
     
     
     

@@ -11,6 +11,8 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
+    <link rel="shortcut icon" type="image/x-icon" href="{% static 'images/favicon.ico' %}">
+
     <!-- calendar link -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.10.2/fullcalendar.min.css" rel="stylesheet" />
 
@@ -54,16 +56,17 @@
                 {% endfor %}
             {% else %}
                 <div class='header text-center p-2 mb-2 mt-4'>
-                    <div class="badge p-3 mb-2" style="border: 2px solid #020000; border-radius: 50%; background-color: #fff;">
+                    <!-- <div class="badge p-3 mb-2" style="border: 2px solid #020000; border-radius: 50%; background-color: #fff;"> -->
+                    <div class="badge p-3 mb-2">
                         <!-- <i class="fa fa-camera text-white" aria-hidden="true" style="font-size: 2rem;"></i> -->
-                        <img src="{% static 'images/travelport.png' %}" alt="Your Logo" class="logo-img">
+                        <img src="{% static 'images/logo-dark.png' %}" alt="Your Logo" class="logo-img" style="height: 100%; width: 100%;">
                     </div>
 
                     <h5 class="text-white"><b>E-Asset</b></h5>   
                 </div>
             {% endif %}
             
-            <hr color="#636161" style="height: 3px;">
+            <hr color="#636161" style="height: 2px;">
 
             <ul class='sidebar-links pt-3'>
                 <li class="sidebar-item active">
@@ -83,11 +86,14 @@
                         <li>
                             <a href="/allequipmentlist"><i class="fas fa-list    mr-2"></i> <span> List</span></a>
                         </li>
+                        {% if 'Admin' in user_groups %}
                         <li>
                             <a href="/addallequipment"> <i class="fas fa-plus    mr-2"></i> <span>Add</span></a>
                         </li>
+                        {% endif %}
                     </ul>
                 </li>
+                {% if 'Admin' in user_groups %}
                 <hr color="#636161">                      
                 <li>
                     <div class="main-menu-acad d-flex justify-content-between">
@@ -106,25 +112,8 @@
                         </li>
                     </ul>
                 </li>
+                {% endif %}
                 <hr color="#636161">
-                <!-- <li>
-                    <div class="main-menu-agency d-flex justify-content-between">
-                        <a class="" href='./location'><i class="fas fa-building    mr-2"></i><span>Location</span></a>
-                        <div class="chevron-agency text-white">
-                            <i class="fas fa-chevron-right    mr-2"></i>
-                        </div>
-                    </div> -->
-                    <!-- sub menu -->
-                    <!-- <ul class="submenu-agency">
-                        <li>
-                            <a href="/agency-list"><i class="fas fa-list    mr-2"></i> <span> List</span></a>
-                        </li>
-                        <li>
-                            <a href="/agencyadd"> <i class="fas fa-plus    mr-2"></i> <span>Add</span></a>
-                        </li>
-                    </ul>
-                </li>
-                <hr color="#636161"> -->
                 <li>
                     <div class="main-menu-acc d-flex justify-content-between">
                         <a class="" href='/fixtures & fittings'><i class="fas fa-warehouse mr-2"></i><span>Fixtures & Fittings</span></a>
@@ -137,9 +126,11 @@
                         <li>
                             <a href="/assetlist"><i class="fas fa-list    mr-2"></i> <span> List</span></a>
                         </li>
+                        {% if 'Admin' in user_groups %}
                         <li>
                             <a href="/addasset"> <i class="fas fa-plus    mr-2"></i> <span>Add</span></a>
                         </li>
+                        {% endif %}
                     </ul>
                 </li>
                 <hr color="#636161">
@@ -179,13 +170,14 @@
                         </li>
                     </ul>
                 </li> 
+                {% if 'Admin' in user_groups %}
                 <hr color="#636161">
                 <li>
-                    <!-- <a class="" href='#'><i class="fas fa-cogs    mr-2"></i><span>Settings</span></a> -->
-                    <!-- /settings/enrollment -->
-                    <!-- <hr className='mt-3' /> -->
+                    <a class="" href='/settings/'><i class="fas fa-cogs    mr-2"></i><span>Settings</span></a>
+                    <!-- /settings/ -->
+                    <hr className='mt-3' />
                 </li>
-                <!-- <hr color="#fff"> -->
+                {% endif %}
             </ul>
         </aside>
 

@@ -1,6 +1,6 @@
 {% extends 'frontend/base.html' %}
-{% block  title %} Admin Users {% endblock title %}
-{% block  pagetitle %} Users {% endblock pagetitle %}
+{% block  title %} Other Users {% endblock title %}
+{% block  pagetitle %} Other Users {% endblock pagetitle %}
 {% block  main %} 
 
 <!-- inner-content -->
@@ -8,10 +8,7 @@
     <nav class=" ml-2 mt-2">
         <ul class="d-flex"style="list-style-type: none;" >
             <li class="nav-item active" >
-                <a class="nav-link btn btn-sm btn-success mr-2" href="/users"><b>Admin Users</b> <span class="sr-only">(current)</span></a>
-            </li>            
-            <li class="nav-item active" >
-                <a class="nav-link btn btn-sm btn-success mr-2" href="/create-other-users"><b>Other Users</b> <span class="sr-only">(current)</span></a>
+                <a class="nav-link btn btn-sm btn-success mr-2" href=""><b>Other Users</b> <span class="sr-only">(current)</span></a>
             </li>            
         </ul>
     </nav>
@@ -32,10 +29,10 @@
     {% endif %}
 
     <div class="stud-info">
-            <form action="{% url 'create_user' %}" class="shadow rounded bg-light p-3 mt-4" method="post" enctype="multipart/form-data">
+            <form action="{% url 'create_other_users' %}" class="shadow rounded bg-light p-3 mt-4" method="post" enctype="multipart/form-data">
                 {% csrf_token %}
 
-                <h5 class="text-center">Add Admin User</h5>
+                <h5 class="text-center">Add Other User</h5>
                 <hr>
                 <div class="row">
                     <div class="form-group col-md-6">
@@ -57,36 +54,8 @@
                         <input type="password" name="password" class="form-control" >
                     </div>
                 </div>
-                <div class="row">
-                    <div class="form-group col-md-6">
-                        <label for="group">Select Group:</label>
-                        <select id="group" name="group" class="form-control" required>
-                            {% for group in groups %}
-                                <option value="{{ group.id }}">{{ group.name }}</option>
-                            {% endfor %}
-                        </select> 
-                    </div>                   
-                </div>
                 <button type="submit" class="btn btn-sm btn-dark w-25">Save</button>
             </form>
-
-        <div class="table-section" style="font-size: 14px;"> 
-            {% if messages %}
-                <ul class="messages">
-                    <script>
-                        $(".alert").alert();
-                    </script>
-                    {% for message in messages %}
-                        <div class="alert alert-warning alert-dismissible fade show" role="alert" {% if message.tags %} class="{{ message.tags }}"{% endif %}>
-                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                            </button>
-                            <strong >{{ message }}</strong> 
-                        </div>
-                    {% endfor %}
-                </ul>
-            {% endif %}
-        </div>
 </div>
 <!-- inner-content -->
 

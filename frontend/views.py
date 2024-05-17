@@ -2,7 +2,8 @@ from django.shortcuts import render, redirect, HttpResponse,get_object_or_404
 from django.contrib import messages
 from .models import *
 from django.db.models import Sum
-from django.contrib.auth.models import User
+from django.contrib.auth.models import User, Group
+from .decorators import group_required
 from django.contrib.auth import login, logout 
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.decorators import login_required
@@ -32,10 +33,23 @@ def register(request):
         form = UserCreationForm(request.POST)
         if form.is_valid():
             form.save()
-            return redirect("login")  # Redirect to the login page after successful registration
+            return redirect("Admin Login")  # Redirect to the login page after successful registration
     else:
         form = UserCreationForm()
     return render(request, "frontend/registration.html", {"form": form})
+
+# def register(request):
+#     if request.method == "POST":
+#         form = UserCreationForm(request.POST)
+#         if form.is_valid():
+#             form.save()
+#             return redirect("Admin Login")  # Redirect to the login page after successful registration
+#     else:
+#         form = UserCreationForm()
+#         # Remove field descriptions and error messages
+#         for field in form.fields.values():
+#             field.help_text = None
+#     return render(request, "frontend/registration.html", {"form": form})
 
 # login views for the admin user
 
@@ -109,7 +123,6 @@ def allEquipmentList(request):
         'received_by',
         'current_status'
     )
-
     # Manually setting the initial value for equipment_id
     # for idx, equipment in enumerate(selected_Equipment):
     #     equipment['equipment_id'] = idx + 1
@@ -124,6 +137,7 @@ def allEquipmentList(request):
     return render(request, 'frontend/student/allequipmentsList.html', context)
 
 @login_required
+# @group_required('Admin')
 def allEquipmentAdd(request):
     # agencies = Agency.objects.all()
     staffs = Staff.objects.all()
@@ -766,3 +780,277 @@ def export_equipment_to_excel(request):
 
     except Equipment.DoesNotExist:
         return HttpResponse('Equipment not found', status=404)
+
+
+# settings views
+@login_required
+def settings(request):
+    if request.method == "POST":
+        current_term = request.POST.get("term")
+        current_year = request.POST.get("year")
+        start_date = request.POST.get("start_date")
+        end_date = request.POST.get("end_date")
+
+        # Check if the end_date of the previous term has been reached
+        # previous_term = Term.objects.filter(status=1).first()
+        # if previous_term and date.today() < previous_term.end_date:
+        #     messages.error(request, "Cannot add a new term before the current term ends.")
+        #     return redirect("settings")
+
+        # First, set the status of any existing terms to expired
+        # Term.objects.update(status=0)
+        
+        # Create a new Term object and set its status to current
+        # new_term = Term.objects.create(
+        #     current_term=current_term,
+        #     current_year=current_year,
+        #     start_date=start_date,
+        #     end_date=end_date,
+        #     status=1  # Set as current term
+        # )
+        messages.success(request, "New term settings have been added successfully")
+
+        return redirect("settings")
+    
+    context = {
+        # 'term_data' : Term.objects.filter(status=1)
+    }
+    return render(request, "frontend/settings.html", context)
+
+# edit term
+def edit_term(request):
+    if request.method == "POST":
+        id = request.POST.get("id")
+        term = request.POST.get("term")
+        # year = request.POST.get("year")
+        start_date = request.POST.get("start_date")
+        end_date = request.POST.get("end_date")
+
+        this_term = Term.objects.get(id=id)
+
+        this_term.current_term = term
+        # this_term.current_year = year
+        this_term.start_date = start_date
+        this_term.end_date = end_date
+
+        this_term.save()
+        messages.success(request, "Academic term edit successfully")
+        return redirect("settings")
+
+# delete term
+def delete_term(request):
+    if request.method == "POST":
+        id = request.POST.get("id")
+        # this_term = Term.objects.get(id=id)
+
+        # this_term.delete()
+        messages.success(request, "Academic term deleted successfully")
+        return redirect("settings")
+
+
+# school information
+@login_required
+def school_info(request):
+    if request.method == "POST":
+        badge = request.FILES.get('badge')
+        schoolname = request.POST.get("schoolname")
+        contact = request.POST.get("contact")
+        box_number = request.POST.get("box_number")
+        email = request.POST.get("email")
+        website = request.POST.get("website")
+
+        # Check if there's existing school info data, assuming only one instance
+        school_info = SchoolInfo.objects.first()
+
+        if school_info is None:
+            # If no data exists, create a new instance
+            school_info = SchoolInfo(
+                schoolname=schoolname,
+                contact=contact,
+                box_number=box_number,
+                email=email,
+                website=website,
+            )
+        else:
+            # If data exists, update it
+            messages.success(request, 'You can only add this information once!')
+            return redirect("School Information")  
+
+        if badge:
+            fs = FileSystemStorage()
+            image_filename = fs.save(badge.name, badge)
+            school_info.badge = image_filename
+
+        school_info.save()
+        messages.success(request, 'School information updated successfully!')
+        return redirect("School Information")  # Use the appropriate URL name for school_info page
+    
+    context = {
+        'school_data': SchoolInfo.objects.all()
+    }
+    return render(request, "frontend/school_info.html", context)
+
+def edit_school_info(request):
+    if request.method == "POST":
+        school_id = request.POST.get("id")
+        school = get_object_or_404(SchoolInfo, pk=school_id)
+
+        # Update school information based on form data
+        school.schoolname = request.POST.get("schoolname")
+        school.contact = request.POST.get("contact")
+        school.box_number = request.POST.get("box_number")
+        school.email = request.POST.get("email")
+        school.website = request.POST.get("website")
+
+        # Handle badge image update if necessary
+        badge = request.FILES.get('badge')
+        if badge:
+            school.badge = badge
+
+        school.save()
+
+        # Add success message
+        messages.success(request, 'School information updated successfully!')
+        return redirect("School Information")
+
+    # Render the school information template with context
+    context = {
+        'school_data': SchoolInfo.objects.all()
+    }
+    return render(request, "frontend/school_info.html", context)
+
+# Fetch the groups function
+# def my_view(request):
+#     groups = Group.objects.all()  # Fetch all groups from the database
+#     print(groups)
+#     return render(request, 'settings.html', {'groups': groups})
+    
+# create user
+def create_user(request):
+    groups = Group.objects.all()  # Fetch all groups from the database
+    print(f"Groups: {groups}") 
+    if request.method == 'POST':
+        full_name = request.POST.get('full_name')
+        username = request.POST.get('username')
+        email = request.POST.get('email')
+        password = request.POST.get('password')
+        group_id = request.POST.get('group')
+
+        # Check if username or email already exists
+        if User.objects.filter(username=username).exists():
+            messages.error(request, 'Username already exists.')
+            return redirect('create_user')
+        if User.objects.filter(email=email).exists():
+            messages.error(request, 'Email already exists.')
+            return redirect('create_user')
+
+        # Create the user
+        user = User.objects.create_user(username=username, email=email, password=password)
+        user.full_name = full_name
+        user.save()
+
+        #Add user to the selected group
+        try:
+            group = Group.objects.get(id=group_id)
+            user.groups.add(group)
+        except Group.DoesNotExist:
+            messages.error(request, 'Invalid group selected.')
+            return redirect('create_user')
+
+        messages.success(request, f'User {username} created successfully!')
+        # return redirect('login')  # Redirect to login page after successful registration
+
+    return render(request, 'frontend/settings.html', {'groups': groups})
+
+def display_users(request):
+    # Retrieve user objects
+    users = User.objects.all()
+    user_data = []
+    for user in users:
+        # Retrieve groups associated with the user
+        groups = user.groups.all().values_list('name', flat=True)
+        group_names = list(groups) 
+        user_info = {
+            'username': user.username,
+            # 'full_name': user.get_full_name(),
+            'email': user.email,
+            'last_login': user.last_login,
+            'groups': group_names
+        }
+        user_data.append(user_info)
+
+    # Render the template with user data
+    return render(request, 'frontend/users.html', {'user_data': user_data})
+
+# edit user
+def edit_user_info(request):
+    if request.method == 'POST':
+        user_id = request.POST.get('id')
+        full_name = request.POST.get('full_name')
+        username = request.POST.get('username')
+        email = request.POST.get('email')
+
+        # Retrieve the user object to update
+        user = User.objects.get(id=user_id)
+
+        # Update user information
+        user.full_name = full_name
+        user.username = username
+        user.email = email
+        user.save()
+
+        # return redirect('user_profile')
+
+# other users views
+@login_required
+def create_other_users(request):
+    otherusers = OtherUsers.objects.all()
+    return render(request,'frontend/addotherusers.html', {'otherusers': otherusers})
+
+@login_required
+def otherUsersReg(request):
+    if(request.method == 'POST'):
+        full_name = request.POST.get('full_name')
+        username = request.POST.get('username')
+        email = request.POST.get('email')
+        password = request.POST.get('password')
+
+        otheruser =OtherUsers.objects.create(
+            full_name=full_name, 
+            username=username, 
+            email=email, 
+            password=password        
+        )
+
+        otheruser.save ()
+        messages.success(request, 'User successfully added!')
+        return redirect("create_other_users")
+    
+
+# def otherUsersReg(request):
+#     if request.method == 'POST':
+#         full_name = request.POST.get('full_name')
+#         username = request.POST.get('username')
+#         email = request.POST.get('email')
+#         password = request.POST.get('password')
+
+#         # Check if username or email already exists
+#         if OtherUsers.objects.filter(username=username).exists():
+#             messages.error(request, 'Username already exists.')
+#             return redirect('create_user')
+#         if OtherUsers.objects.filter(email=email).exists():
+#             messages.error(request, 'Email already exists.')
+#             return redirect('create_user')
+
+#         # Create the OtherUsers object and save it
+#         otheruser = OtherUsers.objects.create(full_name=full_name, username=username, email=email, password=password)
+#         otheruser.save()
+
+#         messages.success(request, f'User {username} created successfully!')
+#         # Redirect to a success page or login page
+#         return redirect('create_other_users')  # Assuming 'create_user' is the URL name for the page where users are created
+
+#     return render(request, 'frontend/addotherusers.html')
+
+
+

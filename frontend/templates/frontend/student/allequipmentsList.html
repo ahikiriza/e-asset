@@ -8,7 +8,9 @@
 <div class="inner-content">
     <div class="list-header">
         <div class="btns">
+            {% if 'Admin' in user_groups %}
             <a href="/addallequipment" class="btn btn-sm add-btn text-white mb-2 ml-3">Add Equipment</a>
+            {% endif %}
             <!-- <a href="/export-excel" class="btn btn-sm bg-success text-white mb-2 ml-2 ">Export excel</a> -->
             <a href="/export_equipment" class="btn btn-sm bg-success text-white mb-2 ml-2 ">Export excel</a>
         </div>
@@ -52,7 +54,9 @@
                     <th>Retrieved By</th>
                     <!-- <th>Received By</th> -->
                     <th>Current Status</th>
+                    {% if 'Admin' in user_groups %}
                     <th>Actions</th>
+                    {% endif %}
                 </tr>
             </thead>
             <tbody>
@@ -72,6 +76,7 @@
                     <td>{{ equipment.retrieved_by }}</td>
                     <!-- <td>{{ equipment.received_by }}</td> -->
                     <td>{{ equipment.current_status }}</td>
+                    {% if 'Admin' in user_groups %}
                     <td>   
                         <!-- <a href="/showstudent/{{student.stdnumber}}" class="btn btn-sm btn-primary ">More ...</a>  -->
                         <div class="btn-group">
@@ -229,6 +234,7 @@
                         </div>
                         <!-- end of modals -->
                     </td>
+                    {% endif %}
                 </tr>
                 {% endfor %}  
             </tbody>

@@ -46,11 +46,17 @@ urlpatterns = [
     path('delete_staff/', views.delete_staff, name="delete_staff"),
 
 #     # settings urls
-#    path('settings/enrollment/', views.settings, name='settings'),
-#    path('settings/school_info/', views.school_info, name='School Information'),
-#    path('edit_term/', views.edit_term, name='edit_term'),
-#    path('delete_term/', views.delete_term, name='delete_term'),
-#    path('edit_school_info/', views.edit_school_info, name='edit_school_info'),
+   path('settings/', views.settings, name='settings'),
+   path('edit_user_info/', views.edit_user_info, name='edit_user_info'),
+   path('create_user/', views.create_user, name='create_user'),
+   path('users/', views.display_users, name='display_users'),
+   path('create-other-users/', views.create_other_users, name='create_other_users'),
+   path('create-other-users/submit/', views.otherUsersReg, name="ListOtherUsers"),
+
+   path('settings/school_info/', views.school_info, name='School Information'),
+   path('edit_term/', views.edit_term, name='edit_term'),
+   path('delete_term/', views.delete_term, name='delete_term'),
+   path('edit_school_info/', views.edit_school_info, name='edit_school_info'),
 
     # imports
     path('export_equipment/', views.export_equipment_to_excel, name='export_equipment_to_excel'),

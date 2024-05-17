@@ -8,7 +8,9 @@
 <div class="inner-content">
     <div class="list-header">
         <div class="btns">
+            {% if 'Admin' in user_groups %}
             <a href="/addequipment" class="btn btn-sm add-btn text-white mb-2 ml-3">Add Equipment</a>
+            {% endif %}
             <!-- <a href="/export-excel" class="btn btn-sm bg-success text-white mb-2 ml-2 ">Export excel</a> -->
         </div>
         <div class="btns mb-3 ml-4">

@@ -1,0 +1,268 @@
+{% extends 'frontend/base.html' %}
+
+{% load static %}
+{% block  title %} Users {% endblock title %}
+{% block  pagetitle %} Users {% endblock pagetitle %}
+{% block  main %} 
+
+<!-- inner-content -->
+<div class="inner-content">
+    <nav class=" ml-2 mt-2">
+        <ul class="d-flex"style="list-style-type: none;" >
+            <li class="nav-item active" >
+                <!-- <a class="nav-link btn btn-sm btn-danger mr-2" href="/settings/enrollment"><b>Edit Admin</b> <span class="sr-only">(current)</span></a> -->
+            </li>
+            <li class="nav-item">
+                <a class="nav-link btn btn-sm btn-danger mr-2" href="/settings/school_info/"><b>Users</b></a>
+            </li>
+            
+        </ul>
+    </nav>
+
+    {% if messages %}
+        <ul class="messages col-md-6 mt-3">
+            <script>
+                $(".alert").alert();
+            </script>
+            {% for message in messages %}
+                <div class="alert alert-warning alert-dismissible fade show" role="alert" {% if message.tags %} class="{{ message.tags }}"{% endif %}>
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                    </button>
+                    <strong >{{ message }}</strong> 
+                </div>
+            {% endfor %}
+        </ul>
+    {% endif %}
+    <!-- User information details -->
+    <div class="row">
+        <div class="col-md-8">
+            <form action="{% url 'create_user' %}" class="shadow rounded bg-light p-3 mt-4" method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+
+                <h5 class="text-center">Add Admin User</h5>
+                <hr>
+                <div class="row">
+                    <div class="form-group col-md-6">
+                        <label for="">Name: </label>
+                        <input type="text" name="full_name" class="form-control" required>
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label for="">Username: </label>
+                        <input type="text" name="username" class="form-control" required>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group col-md-6">
+                        <label for="">Email: </label>
+                        <input type="email" name="email" class="form-control" required>
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label for="">Password: </label>
+                        <input type="password" name="password" class="form-control" >
+                    </div>
+                </div>
+                <button type="submit" class="btn btn-sm btn-dark w-25">Save</button>
+            </form>
+        </div>
+
+        <div class="table-section" style="font-size: 14px;"> 
+            {% if messages %}
+                <ul class="messages">
+                    <script>
+                        $(".alert").alert();
+                    </script>
+                    {% for message in messages %}
+                        <div class="alert alert-warning alert-dismissible fade show" role="alert" {% if message.tags %} class="{{ message.tags }}"{% endif %}>
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                            </button>
+                            <strong >{{ message }}</strong> 
+                        </div>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+            <table class="table" id="table">
+                <thead>
+                    <tr>
+                        <th>Username</th>
+                        <th>Full Name</th>
+                        <th>Email</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for user in user_data %}
+                        <tr>
+                            <td>{{ user.username }}</td>
+                            <td>{{ user.full_name }}</td>
+                            <td>{{ user.email }}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+        <!-- <div class="col-md-4 mt-3">
+            <div class="user-info bg-dark text-white shadow rounded p-3 mt-3">
+                <h5 class="text-center">Users</h5>
+                <hr color="#fff">
+        
+                {% for user in user_data %}
+                <div class="info mt-3 ml-3">
+                    <div class="d-flex" style="margin-bottom: -20px;">
+                        <p class="mr-3"><b>Name: </b></p>
+                        <p>{{ user.full_name }}</p>
+                    </div>
+                    <hr>
+                    <div class="d-flex" style="margin-bottom: -20px;">
+                        <p class="mr-3"><b>Username: </b></p>
+                        <p>{{ user.username }}</p>
+                    </div>
+                    <hr>
+                    <div class="d-flex" style="margin-bottom: -20px;">
+                        <p class="mr-3"><b>Email: </b></p>
+                        <p>{{ user.email }}</p>
+                    </div>
+                    <hr>
+                    <div class="btns  d-flex justify-content-center ">
+                        <a href="#edit{{ user.id }}" data-toggle="modal" class="btn btn-sm btn-primary"><i class="fas fa-edit"></i>Edit</a>   
+                    </div>
+        
+                    Edit Modal
+                    <div class="modal fade" id="edit{{ user.id }}" tabindex="-1" role="dialog" aria-labelledby="editUserModalLabel" aria-hidden="true">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title text-dark">Edit User Information</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    Edit User Information Form
+                                    <form action="/edit_user_info/" method="post">
+                                        {% csrf_token %}
+                                        <input type="hidden" name="id" value="{{ user.id }}">
+                                        
+                                        <div class="form-group text-dark">
+                                            <label for="full_name">Full Name:</label>
+                                            <input type="text" name="full_name" class="form-control" value="{{ user.full_name }}" required>
+                                        </div>
+                                        
+                                        <div class="form-group text-dark">
+                                            <label for="username">Username:</label>
+                                            <input type="text" name="username" class="form-control" value="{{ user.username }}" required>
+                                        </div>
+                                        
+                                        <div class="form-group text-dark">
+                                            <label for="email">Email:</label>
+                                            <input type="email" name="email" class="form-control" value="{{ user.email }}" required>
+                                        </div>
+                                        
+                                        <button type="submit" class="btn btn-primary">Save Changes</button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+        
+            </div>
+        </div>
+        
+
+        <div class="col-md-4 mt-3">
+            <div class="school-info bg-dark text-white shadow rounded p-3 mt-3">
+                <h5 class="text-center">Users</h5>
+                <hr color="#fff">
+
+                {% for data in user_data %}
+                <div class="info mt-3 ml-3">
+                    <div class="d-flex" style="margin-bottom: -20px;">
+                        <p class="mr-3"><b>Name: </b></p>
+                        <p>{{ data.get_full_name }}</p>
+                    </div>
+                    <hr>
+                    <div class="d-flex" style="margin-bottom: -20px;">
+                        <p class="mr-3"><b>Username: </b></p>
+                        <p>{{ data.username }}</p>
+                    </div>
+                    <hr>
+                    <div class="d-flex" style="margin-bottom: -20px;">
+                        <p class="mr-3"><b>Email: </b></p>
+                        <p>{{ data.email }}</p>
+                    </div>
+                        <hr>
+                        <div class="btns  d-flex justify-content-center ">
+                            <a href="#edit{{data.id}}" data-toggle="modal" class="btn btn-sm btn-primary"><i class="fas fa-edit"></i>Edit</a>   
+                        </div>-->
+
+                        <!-- Edit Modal -->
+                        <div class="modal fade" id="edit{{data.id}}" tabindex="-1" role="dialog" aria-labelledby="editSchoolModalLabel" aria-hidden="true">
+                            <div class="modal-dialog" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title text-dark">Edit School Information</h5>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <!-- Edit School Information Form -->
+                                        <form action="/edit_school_info/" method="post" enctype="multipart/form-data">
+                                            {% csrf_token %}
+                                            <input type="hidden" name="id" value="{{ data.id }}">
+                                            
+                                            <div class="form-group text-dark">
+                                                <label for="schoolname">School Name:</label>
+                                                <input type="text" name="schoolname" class="form-control" value="{{ data.schoolname }}" required>
+                                            </div>
+                                            
+                                            <div class="form-group text-dark">
+                                                <label for="badge">Badge:</label>
+                                                <input type="file" name="badge" accept="image/*">
+                                            </div>
+                                            
+                                            <div class="form-group text-dark">
+                                                <label for="contact">Contacts:</label>
+                                                <input type="text" name="contact" class="form-control" value="{{ data.contact }}" required>
+                                            </div>
+                                            
+                                            <div class="form-group text-dark">
+                                                <label for="box_number">P.O. Box Number:</label>
+                                                <input type="text" name="box_number" class="form-control" value="{{ data.box_number }}" required>
+                                            </div>
+                                            
+                                            <div class="form-group text-dark">
+                                                <label for="email">Email:</label>
+                                                <input type="email" name="email" class="form-control" value="{{ data.email }}">
+                                            </div>
+                                            
+                                            <div class="form-group text-dark" >
+                                                <label for="website">Website link:</label>
+                                                <input type="text" name="website" class="form-control" value="{{ data.website }}">
+                                            </div>
+                                            
+                                            <button type="submit" class="btn btn-primary">Save Changes</button>
+                                        </form>
+                                    </div>
+
+                                    
+
+                                </div>
+                            </div>
+                        </div>
+
+                      
+                    </div>
+                {% endfor %}
+
+            </div>
+            
+        </div>  -->
+    </div>
+</div>
+<!-- inner-content -->
+
+{% endblock main %}

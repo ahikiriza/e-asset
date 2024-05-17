@@ -1,0 +1,62 @@
+{% extends 'frontend/base.html' %}
+{% block  title %} User List {% endblock title %}
+{% block  pagetitle %} Admin User List {% endblock pagetitle %}
+{% load static %}
+{% block  main %} 
+
+<!-- inner-content -->
+<div class="inner-content">
+    <div class="list-header">
+        <div class="btns">
+            <a href="/create_user" class="btn btn-sm add-btn text-white mb-2 ml-3">Add Admin</a>
+            <a href="" class="btn btn-sm bg-success text-white mb-2 ml-2 ">Export excel</a> 
+        </div>
+    </div>
+    <div class="table-section" style="font-size: 14px;"> 
+        {% if messages %}
+            <ul class="messages">
+                <script>
+                    $(".alert").alert();
+                </script>
+                {% for message in messages %}
+                    <div class="alert alert-warning alert-dismissible fade show" role="alert" {% if message.tags %} class="{{ message.tags }}"{% endif %}>
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                        </button>
+                        <strong >{{ message }}</strong> 
+                    </div>
+                {% endfor %}
+            </ul>
+        {% endif %}
+        <table class="table" id="table">
+            <thead>
+            <tr>
+                <th>Username</th>
+                <th>Email</th>
+                <th>Group</th>
+                <th>Last Login</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for user in user_data %}
+                <tr>
+                    <td>{{ user.username }}</td>
+                    <td>{{ user.email }}</td>
+                    <td>
+                        {% for group in user.groups %}
+                                {{ group }}{% if not forloop.last %}, {% endif %}
+                        {% endfor %}
+                    </td>
+                    <td>{{ user.last_login }}</td>
+                    <td></td>
+                </tr>
+            {% endfor %}
+        </tbody>
+        </table>
+    </div>
+</div>
+
+
+<!-- inner-content -->
+{% endblock main %}
