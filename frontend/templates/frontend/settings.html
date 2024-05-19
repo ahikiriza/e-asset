@@ -1,6 +1,6 @@
 {% extends 'frontend/base.html' %}
-{% block  title %} Admin Users {% endblock title %}
-{% block  pagetitle %} Users {% endblock pagetitle %}
+{% block  title %} Admin settings {% endblock title %}
+{% block  pagetitle %} Add Users {% endblock pagetitle %}
 {% block  main %} 
 
 <!-- inner-content -->
@@ -8,10 +8,10 @@
     <nav class=" ml-2 mt-2">
         <ul class="d-flex"style="list-style-type: none;" >
             <li class="nav-item active" >
-                <a class="nav-link btn btn-sm btn-success mr-2" href="/users"><b>Admin Users</b> <span class="sr-only">(current)</span></a>
+                <a class="nav-link btn btn-sm btn-success mr-2" href="/users"><b>View Users</b> <span class="sr-only">(current)</span></a>
             </li>            
             <li class="nav-item active" >
-                <a class="nav-link btn btn-sm btn-success mr-2" href="/create-other-users"><b>Other Users</b> <span class="sr-only">(current)</span></a>
+                <a class="nav-link btn btn-sm btn-success mr-2" href="/settings"><b>Add Users</b> <span class="sr-only">(current)</span></a>
             </li>            
         </ul>
     </nav>
@@ -59,8 +59,9 @@
                 </div>
                 <div class="row">
                     <div class="form-group col-md-6">
-                        <label for="group">Select Group:</label>
+                        <label for="group">Select User Role:</label>
                         <select id="group" name="group" class="form-control" required>
+                            <option value="" disabled selected>Select a Role</option>
                             {% for group in groups %}
                                 <option value="{{ group.id }}">{{ group.name }}</option>
                             {% endfor %}
@@ -86,8 +87,6 @@
                     {% endfor %}
                 </ul>
             {% endif %}
-        </div>
-</div>
-<!-- inner-content -->
+        </div>        
 
 {% endblock main %}

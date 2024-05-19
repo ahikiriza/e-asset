@@ -8,7 +8,7 @@
 <div class="inner-content">
     <div class="list-header">
         <div class="btns">
-            {% if 'Admin' in user_groups %}
+            {% if 'Admin' in user_groups or 'SubAdmin' in user_groups %}
             <a href="/addallequipment" class="btn btn-sm add-btn text-white mb-2 ml-3">Add Equipment</a>
             {% endif %}
             <!-- <a href="/export-excel" class="btn btn-sm bg-success text-white mb-2 ml-2 ">Export excel</a> -->
@@ -66,13 +66,13 @@
                     <td>{{ equipment.equipment_name }}</td>
                     <td>{{ equipment.brand }}</td>
                     <td>{{ equipment.serial_number }}</td>
-                    <td>{{ equipment.purchase_date }}</td>
+                    <td>{{ equipment.purchase_date|date:"d-m-Y" }}</td>
                     <td>{{ equipment.purchase_price }}</td>
                     <td>{{ equipment.supplier }}</td>
                     <td>{{ equipment.location }}</td>
                     <td>{{ equipment.delivered_by__name }}</td>
-                    <td>{{ equipment.delivered_date }}</td>
-                    <td>{{ equipment.retrieval_date }}</td>
+                    <td>{{ equipment.delivered_date|date:"d-m-Y" }}</td>
+                    <td>{{ equipment.retrieval_date|date:"d-m-Y" }}</td>
                     <td>{{ equipment.retrieved_by }}</td>
                     <!-- <td>{{ equipment.received_by }}</td> -->
                     <td>{{ equipment.current_status }}</td>

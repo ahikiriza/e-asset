@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Event Logs</title>
+</head>
+<body>
+    <h1>Event Logs</h1>
+    <div>
+        <ul>
+            {% for log in logs %}
+                <li>{{ log.timestamp }} - 
+                    {% if log.user %}
+                        {{ log.user.username }}
+                    {% else %}
+                        Anonymous
+                    {% endif %}
+                    {{ log.event_type }} {{ log.path }} ({{ log.method }})
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
+</body>
+</html>

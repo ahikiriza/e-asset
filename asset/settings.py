@@ -13,6 +13,10 @@ import os
 # import dj_database_url
 from pathlib import Path
 
+# 
+from dotenv import load_dotenv
+load_dotenv()
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -27,6 +31,9 @@ SECRET_KEY = 'django-insecure-ho*_i16!y#ql3!v%43tp8=8@ovb*!yji^r!t3m*p1yeh@=u9ar
 DEBUG = True
 
 ALLOWED_HOSTS = ["*"]
+
+
+
 
 
 # Application definition
@@ -50,7 +57,10 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'frontend.middleware.EventTrackingMiddleware',
+    'frontend.middleware.RestrictRegisterBySecretMiddleware',
 ]
+
 # Add the message storage backend
 MESSAGE_STORAGE = 'django.contrib.messages.storage.session.SessionStorage'
 ROOT_URLCONF = 'asset.urls'
@@ -151,6 +161,7 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
+LOGIN_URL = '/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 LOGIN_REDIRECT_URL = "Dashboard"
 # APPEND_SLASH = False

@@ -54,7 +54,7 @@
                     <td>{{ mequipment.brand }}</td>
                     <td>{{ mequipment.serial_number }}</td>
                     <td>{{ mequipment.location }}</td>
-                    <td>{{ mequipment.delivered_date }}</td>
+                    <td>{{ mequipment.delivered_date|date:"d-m-Y" }}</td>
                     <td>{{ mequipment.delivered_by__name}}</td>
                 </tr>
                 {% endfor %}  

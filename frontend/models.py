@@ -1,4 +1,5 @@
 from django.db import models
+from django.contrib.auth.models import User
 ##############################################################################################
 # Asset models
 
@@ -178,7 +179,25 @@ class OtherUsers(models.Model):
     
     Display_Login_Fields = ['full_name','username','email','password']
     
-    
-    
+# Event logging in django
+class Event(models.Model):
+    EVENT_TYPES = (
+        ('login', 'Login'),
+        ('logout', 'Logout'),
+        ('create', 'Create'),
+        ('update', 'Update'),
+        ('delete', 'Delete'),
+        ('view', 'View'),
+        ('access', 'Access'),
+    )
+    user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
+    event_type = models.CharField(max_length=50, choices=EVENT_TYPES)
+    path = models.CharField(max_length=255)
+    method = models.CharField(max_length=10)
+    timestamp = models.DateTimeField(auto_now_add=True)
+    additional_info = models.TextField(null=True, blank=True)
+    def __str__(self):
+        return f'{self.user.username if self.user else "Anonymous"} {self.event_type} {self.path} at {self.timestamp}'
+
     
     

@@ -42,6 +42,7 @@
                     <th> Brand</th>
                     <th> Serial Number</th>
                     <th>Location</th>
+                    <th>Retrieval Date</th>
                     <th>Equipment Condition </th>
                 </tr>
             </thead>
@@ -53,6 +54,7 @@
                     <td>{{ store.brand }}</td>
                     <td>{{ store.serial_number }}</td>
                     <td>{{ store.location }}</td>
+                    <td>{{ store.retrieval_date|date:"d-m-Y" }}</td>
                     <td>{{ store.equipment_condition }}</td>
                 </tr>
                 {% endfor %}  

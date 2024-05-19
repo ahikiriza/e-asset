@@ -9,7 +9,6 @@ from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import UserCreationForm
 from django.http import JsonResponse
-# from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 from datetime import datetime, date
 from django.utils.timezone import now
@@ -21,7 +20,7 @@ from django.db.models import Q
 import bcrypt
 from django.core.exceptions import ValidationError
 from django.utils import timezone
-
+from .models import Event
 salt = bcrypt.gensalt()
 
 def encryptpassword(password):
@@ -37,19 +36,6 @@ def register(request):
     else:
         form = UserCreationForm()
     return render(request, "frontend/registration.html", {"form": form})
-
-# def register(request):
-#     if request.method == "POST":
-#         form = UserCreationForm(request.POST)
-#         if form.is_valid():
-#             form.save()
-#             return redirect("Admin Login")  # Redirect to the login page after successful registration
-#     else:
-#         form = UserCreationForm()
-#         # Remove field descriptions and error messages
-#         for field in form.fields.values():
-#             field.help_text = None
-#     return render(request, "frontend/registration.html", {"form": form})
 
 # login views for the admin user
 
@@ -137,7 +123,7 @@ def allEquipmentList(request):
     return render(request, 'frontend/student/allequipmentsList.html', context)
 
 @login_required
-# @group_required('Admin')
+@group_required('Admin', 'SubAdmin')
 def allEquipmentAdd(request):
     # agencies = Agency.objects.all()
     staffs = Staff.objects.all()
@@ -145,6 +131,8 @@ def allEquipmentAdd(request):
     return render(request, 'frontend/student/allequipmentsAdd.html',{'classes': Equipment.objects.all(), 'staffs': staffs, 'current_statuses': current_statuses})
 
 # All equipment registration views
+@login_required
+@group_required('Admin', 'SubAdmin')
 def allEquipmentReg(request):
     if request.method == 'POST':
         equipment_name = request.POST.get('equipment_name')
@@ -402,6 +390,7 @@ def retrievedList(request):
         'brand',
         'serial_number',
         'location',
+        'retrieval_date',
         'equipment_condition',
     )
 
@@ -463,6 +452,7 @@ def agencyList(request):
     return render(request,'frontend/student/agencylist.html', context)
 # Staff Views
 @login_required
+@group_required('Admin')
 def staffAdd(request):
     staff = Staff.objects.all()
     departments = Staff._meta.get_field('department').choices
@@ -470,6 +460,7 @@ def staffAdd(request):
 
 # staff Registration
 @login_required
+@group_required('Admin')
 def staffReg(request):
     if(request.method == 'POST'):
         name =request.POST.get('name')
@@ -486,6 +477,7 @@ def staffReg(request):
     
 # Staff list
 @login_required
+@group_required('Admin')
 def staffList(request):
     staff =Staff.objects.values(
         'staff_id',
@@ -781,42 +773,6 @@ def export_equipment_to_excel(request):
     except Equipment.DoesNotExist:
         return HttpResponse('Equipment not found', status=404)
 
-
-# settings views
-@login_required
-def settings(request):
-    if request.method == "POST":
-        current_term = request.POST.get("term")
-        current_year = request.POST.get("year")
-        start_date = request.POST.get("start_date")
-        end_date = request.POST.get("end_date")
-
-        # Check if the end_date of the previous term has been reached
-        # previous_term = Term.objects.filter(status=1).first()
-        # if previous_term and date.today() < previous_term.end_date:
-        #     messages.error(request, "Cannot add a new term before the current term ends.")
-        #     return redirect("settings")
-
-        # First, set the status of any existing terms to expired
-        # Term.objects.update(status=0)
-        
-        # Create a new Term object and set its status to current
-        # new_term = Term.objects.create(
-        #     current_term=current_term,
-        #     current_year=current_year,
-        #     start_date=start_date,
-        #     end_date=end_date,
-        #     status=1  # Set as current term
-        # )
-        messages.success(request, "New term settings have been added successfully")
-
-        return redirect("settings")
-    
-    context = {
-        # 'term_data' : Term.objects.filter(status=1)
-    }
-    return render(request, "frontend/settings.html", context)
-
 # edit term
 def edit_term(request):
     if request.method == "POST":
@@ -918,14 +874,10 @@ def edit_school_info(request):
         'school_data': SchoolInfo.objects.all()
     }
     return render(request, "frontend/school_info.html", context)
-
-# Fetch the groups function
-# def my_view(request):
-#     groups = Group.objects.all()  # Fetch all groups from the database
-#     print(groups)
-#     return render(request, 'settings.html', {'groups': groups})
     
 # create user
+@login_required
+@group_required('Admin')
 def create_user(request):
     groups = Group.objects.all()  # Fetch all groups from the database
     print(f"Groups: {groups}") 
@@ -962,6 +914,8 @@ def create_user(request):
 
     return render(request, 'frontend/settings.html', {'groups': groups})
 
+@login_required
+@group_required('Admin')
 def display_users(request):
     # Retrieve user objects
     users = User.objects.all()
@@ -983,6 +937,7 @@ def display_users(request):
     return render(request, 'frontend/users.html', {'user_data': user_data})
 
 # edit user
+@login_required
 def edit_user_info(request):
     if request.method == 'POST':
         user_id = request.POST.get('id')
@@ -999,58 +954,26 @@ def edit_user_info(request):
         user.email = email
         user.save()
 
-        # return redirect('user_profile')
 
-# other users views
+#create logging events
 @login_required
-def create_other_users(request):
-    otherusers = OtherUsers.objects.all()
-    return render(request,'frontend/addotherusers.html', {'otherusers': otherusers})
+def create_Events(request):
+    # Your view logic here
+    Event.objects.create(
+        user=request.user,
+        event_type='access',
+        path=request.path,
+        method=request.method,
+        additional_info='Some additional info'
+    )
+    return render(request, 'frontend/eventlogs.html')
 
+# Event logs
 @login_required
-def otherUsersReg(request):
-    if(request.method == 'POST'):
-        full_name = request.POST.get('full_name')
-        username = request.POST.get('username')
-        email = request.POST.get('email')
-        password = request.POST.get('password')
-
-        otheruser =OtherUsers.objects.create(
-            full_name=full_name, 
-            username=username, 
-            email=email, 
-            password=password        
-        )
-
-        otheruser.save ()
-        messages.success(request, 'User successfully added!')
-        return redirect("create_other_users")
-    
-
-# def otherUsersReg(request):
-#     if request.method == 'POST':
-#         full_name = request.POST.get('full_name')
-#         username = request.POST.get('username')
-#         email = request.POST.get('email')
-#         password = request.POST.get('password')
-
-#         # Check if username or email already exists
-#         if OtherUsers.objects.filter(username=username).exists():
-#             messages.error(request, 'Username already exists.')
-#             return redirect('create_user')
-#         if OtherUsers.objects.filter(email=email).exists():
-#             messages.error(request, 'Email already exists.')
-#             return redirect('create_user')
-
-#         # Create the OtherUsers object and save it
-#         otheruser = OtherUsers.objects.create(full_name=full_name, username=username, email=email, password=password)
-#         otheruser.save()
-
-#         messages.success(request, f'User {username} created successfully!')
-#         # Redirect to a success page or login page
-#         return redirect('create_other_users')  # Assuming 'create_user' is the URL name for the page where users are created
-
-#     return render(request, 'frontend/addotherusers.html')
-
-
-
+@group_required('Admin')
+def event_logs(request):
+    if request.user.is_authenticated:
+        logs = Event.objects.filter(user=request.user).order_by('-timestamp')
+        return render(request, 'frontend/eventlogs.html', {'logs': logs})
+    else:
+        return render(request, 'frontend/eventlogs.html', {'logs': []})

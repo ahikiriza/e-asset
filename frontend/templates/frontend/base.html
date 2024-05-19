@@ -86,7 +86,7 @@
                         <li>
                             <a href="/allequipmentlist"><i class="fas fa-list    mr-2"></i> <span> List</span></a>
                         </li>
-                        {% if 'Admin' in user_groups %}
+                        {% if 'Admin' in user_groups or 'SubAdmin' in user_groups %}
                         <li>
                             <a href="/addallequipment"> <i class="fas fa-plus    mr-2"></i> <span>Add</span></a>
                         </li>
@@ -126,7 +126,7 @@
                         <li>
                             <a href="/assetlist"><i class="fas fa-list    mr-2"></i> <span> List</span></a>
                         </li>
-                        {% if 'Admin' in user_groups %}
+                        {% if 'Admin' in user_groups or 'SubAdmin' in user_groups %}
                         <li>
                             <a href="/addasset"> <i class="fas fa-plus    mr-2"></i> <span>Add</span></a>
                         </li>

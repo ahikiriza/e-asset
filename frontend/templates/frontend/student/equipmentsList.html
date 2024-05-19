@@ -55,7 +55,7 @@
                     <td>{{ equipment.equipment_name }}</td>
                     <td>{{ equipment.brand }}</td>
                     <td>{{ equipment.serial_number }}</td>
-                    <td>{{ equipment.purchase_date }}</td>
+                    <td>{{ equipment.purchase_date|date:"d-m-Y" }}</td>
                     <td>{{ equipment.purchase_price }}</td>
                     <td>{{ equipment.supplier }}</td>                     
                 </tr>

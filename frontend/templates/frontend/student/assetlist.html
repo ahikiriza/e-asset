@@ -8,7 +8,7 @@
 <div class="inner-content">
     <div class="list-header">
         <div class="btns">
-            {% if 'Admin' in user_groups %}
+            {% if 'Admin' in user_groups or 'SubAdmin' in user_groups %}
             <a href="/addasset" class="btn btn-sm add-btn text-white mb-2 ml-3">Add Asset</a>
             {% endif %}
             <a href="" class="btn btn-sm bg-success text-white mb-2 ml-2 ">Export excel</a>
@@ -61,9 +61,9 @@
                     <td>{{ asset.brand }}</td>
                     <td>{{ asset.serial_number }}</td>
                     <td>{{ asset.aquisition_cost }}</td>
-                    <td>{{ asset.aquisition_date }}</td>
+                    <td>{{ asset.aquisition_date|date:"d-m-Y" }}</td>
                     <td>{{ asset.location }}</td>
-                    <td>{{ asset.delivery_date }}</td>
+                    <td>{{ asset.delivery_date|date:"d-m-Y" }}</td>
                     <td>{{ asset.delivered_by }}</td>
 
                     {% if 'Admin' in user_groups %}

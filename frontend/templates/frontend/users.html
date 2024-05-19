@@ -3,12 +3,14 @@
 {% block  pagetitle %} Admin User List {% endblock pagetitle %}
 {% load static %}
 {% block  main %} 
+{% load custom_filters %}
+
 
 <!-- inner-content -->
 <div class="inner-content">
     <div class="list-header">
         <div class="btns">
-            <a href="/create_user" class="btn btn-sm add-btn text-white mb-2 ml-3">Add Admin</a>
+            <a href="/settings" class="btn btn-sm add-btn text-white mb-2 ml-3">Add User</a>
             <a href="" class="btn btn-sm bg-success text-white mb-2 ml-2 ">Export excel</a> 
         </div>
     </div>
@@ -48,7 +50,7 @@
                                 {{ group }}{% if not forloop.last %}, {% endif %}
                         {% endfor %}
                     </td>
-                    <td>{{ user.last_login }}</td>
+                    <td>{{ user.last_login|add_hours:3|date:"d-m-Y H:i:s" }}</td>
                     <td></td>
                 </tr>
             {% endfor %}
