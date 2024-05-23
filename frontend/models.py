@@ -1,6 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
-##############################################################################################
+
 # Asset models
 
 class Staff(models.Model):
@@ -115,45 +115,6 @@ class Asset(models.Model):
 
     Display_Asset = [
         'asset_id', 'asset_name', 'brand', 'serial_number', 'aquisition_cost','aquisition_date','location','delivery_date','delivered_by'
-    ]
-
-
-
-####################################################################################################
-    
-
-class SchoolInfo(models.Model):
-    schoolname = models.CharField(max_length= 150, verbose_name="School name")
-    badge = models.ImageField(upload_to='school_badge/', blank=True, null=True)
-    contact = models.CharField(max_length=15 , verbose_name="Contact")
-    box_number = models.CharField(max_length=50 , verbose_name="Box Number")
-    email = models.EmailField(default= None, verbose_name="Email")
-    website = models.CharField(max_length= 100, verbose_name="Website")
-
-    Display_School = [
-        'schoolname', 'contact', 'box_number', 'email','website'
-    ]
-
-
-
-class Teachers(models.Model):
-
-    teacherid = models.CharField(primary_key=True, max_length=20, verbose_name='Teacher id')
-    profile_image = models.ImageField(upload_to='teacher_profiles/', blank=True, null=True)
-    teachernames = models.CharField(max_length=100, verbose_name='Teachers Names')
-    dob = models.DateField(default=None , verbose_name='Date of Birth')
-    contact = models.CharField(max_length=15, verbose_name='Contact')
-    email = models.EmailField(verbose_name="Email Address")
-    address = models.CharField(max_length=200, verbose_name='Address')
-    joiningdate = models.DateField(default=None , verbose_name='Joining Date')
-    qualification = models.CharField(max_length=100, verbose_name='Academic Qualifications')
-    username = models.CharField(max_length=50 , verbose_name='Username')
-    password = models.CharField(max_length=100, verbose_name='Password')
-    salary = models.CharField(max_length=100, default=None, verbose_name='Salary')
-    bankaccnum = models.CharField(max_length=100, default=None, verbose_name='Bank Account No.')
-
-    Display_Teachers = [
-        'teacherid' , 'teachernames' , 'dob' , 'gender' , 'contact' , 'email' , 'address' , 'joiningdate' , 'qualification' , 'username' , 'password', 'salary', 'bankaccnum', 
     ]
 
 #login model

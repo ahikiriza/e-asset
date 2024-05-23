@@ -71,31 +71,31 @@
             <div class="row">
                 <!-- name -->
                 <div class="form-group col-md-4">
-                    <label for="">Equipment Name: </label>
+                    <label for="">Equipment Name: <span class="text-danger">*</span></label>
                     <input type="text" name="equipment_name" class="form-control" required>
                 </div>
                 <!-- brand-->
                 <div class="form-group col-md-4">
-                    <label for="">Brand </label>
-                    <input type="text" name="brand" class="form-control">
+                    <label for="">Brand <span class="text-danger">*</span></label>
+                    <input type="text" name="brand" class="form-control" required>
                 </div>
                 <!-- serial number -->
                 <div class="form-group col-md-4">
-                    <label for="">Serial Number </label>
-                    <input type="text" name="serial_number" class="form-control">
+                    <label for="">Serial Number <span class="text-danger">*</span></label>
+                    <input type="text" name="serial_number" class="form-control" required>
                 </div>                 
             </div>
             <div class="row">
                 <!-- purchase date -->
                 <div class="form-group col-md-4">
-                    <label for="">Purchase Date</label>
+                    <label for="">Purchase Date <span class="text-danger">*</span></label>
                     <input type="date" name="purchase_date" class="form-control" required>
                 </div>
                
                 <!-- purchase price -->
                 <div class="form-group col-md-4">
-                    <label for="">Purchase price </label>
-                    <input type="text" name="purchase_price" class="form-control">
+                    <label for="">Purchase price <span class="text-danger">*</span></label>
+                    <input type="text" name="purchase_price" class="form-control" required>
                 </div>
                 <!-- supplier name -->
                 <div class="form-group col-md-4">
@@ -106,7 +106,7 @@
             <div class="row">
                 <!-- current status -->
                 <div class="form-group col-md-4">
-                    <label for="">Current Status </label>
+                    <label for="">Current Status <span class="text-danger">*</span></label>
                     <select name="current_status" id="" class="form-control">
                         <option value="">---</option>
                         {% for status_value, status_display in current_statuses %}
